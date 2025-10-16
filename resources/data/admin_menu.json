@@ -1,0 +1,307 @@
+[
+    {
+        "title": "Dashboard",
+        "icon": "ri-dashboard-line",
+        "route": "admin.home",
+        "permission": "view dashboard"
+    },
+    {
+        "title": "Users",
+        "icon": "ri-user-3-line",
+        "route": "admin.users.index",
+        "permission": "view users"
+    },
+    {
+        "title": "Tenant Management",
+        "icon": "ri-building-line",
+        "route": "admin.tenants.index",
+        "permission": "Tenant Management"
+    },
+    {
+        "title": "Roles & Permissions",
+        "icon": "ri-shield-user-line",
+        "route": null,
+        "permission": "view roles",
+        "children": [
+            {
+                "title": "All Roles",
+                "route": "admin.roles.index",
+                "color": "text-info",
+                "permission": "view roles"
+            },
+            {
+                "title": "Add Roles",
+                "route": "admin.roles.create",
+                "color": "text-success",
+                "permission": "create roles"
+            },
+            {
+                "title": "All Permissions",
+                "route": "admin.permissions.index",
+                "color": "text-warning",
+                "permission": "view permissions"
+            }
+        ]
+    },
+    {
+        "divider": "Content Management"
+    },
+    {
+        "title": "Dynamic Pages",
+        "icon": "ri-pages-line",
+        "route": "admin.pages.index",
+        "color": "text-info",
+        "permission": "view pages"
+    },
+    {
+        "title": "Hero Section (Home Page)",
+        "icon": "ri-pages-line",
+        "route": null,
+        "color": "text-info",
+        "permission": "view pages",
+        "children": [
+            {
+                "title": "Static Version",
+                "route": "admin.herosection.static",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Slider Version",
+                "route": "admin.slider.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Video Version",
+                "route": "admin.herosection.video",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            }
+        ]
+    },
+    {
+        "title": "Home Page Sections",
+        "icon": "ri-pages-line",
+        "route": null,
+        "color": "text-info",
+        "permission": "view pages",
+        "children": [
+            {
+                "title": "Intro Section",
+                "icon": "ri-pages-line",
+                "route": "admin.introsection.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Approach Section",
+                "icon": "ri-pages-line",
+                "route": "admin.approach.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Service Section",
+                "icon": "ri-pages-line",
+                "route": "admin.servicesection.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Project Section",
+                "icon": "ri-pages-line",
+                "route": "admin.portfoliosection.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Blog Section",
+                "icon": "ri-pages-line",
+                "route": "admin.blogsection.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Statistics Section",
+                "icon": "ri-pages-line",
+                "route": "admin.statistics.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Service 2 Section",
+                "icon": "ri-pages-line",
+                "route": "admin.service2section.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Testimonials Section",
+                "icon": "ri-pages-line",
+                "route": "admin.testimonial.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Blog 2 Section",
+                "icon": "ri-pages-line",
+                "route": "admin.blog2section.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            }
+        ]
+    },
+    {
+        "title": "Sections",
+        "icon": "ri-pages-line",
+        "route": "admin.sections.index",
+        "permission": "view pages"
+    },
+    {
+        "title": "Website Menu Builder",
+        "icon": "ri-shield-user-line",
+        "route": null,
+        "permission": "view pages",
+        "children": [
+            {
+                "title": "Mega Menus",
+                "route": "admin.megamenus",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-info",
+                "permission": "view pages"
+            },
+            {
+                "title": "Main Menu",
+                "route": "admin.menu_builder.index",
+                "keys": {
+                    "language": "en"
+                },
+                "color": "text-success",
+                "permission": "create pages"
+            },
+            {
+                "title": "Permalinks",
+                "route": "admin.permalinks.index",
+                "color": "text-warning",
+                "permission": "view pages"
+            }
+        ]
+    },
+    {
+        "title": "Services",
+        "icon": "ri-service-line",
+        "route": null,
+        "permission": "view services",
+        "children": [
+            {
+                "title": "All Categories",
+                "route": "admin.scategories.index",
+                "color": "text-success",
+                "permission": "view service categories"
+            },
+            {
+                "title": "All Services",
+                "route": "admin.services.index",
+                "color": "text-success",
+                "permission": "view service categories"
+            }
+        ]
+    },
+    {
+        "title": "Blogs",
+        "icon": "ri-article-line",
+        "route": null,
+        "permission": "view blogs",
+        "children": [
+            {
+                "title": "All Categories",
+                "route": "admin.bcategories.index",
+                "color": "text-purple",
+                "permission": "view blog categories"
+            },
+            {
+                "title": "All Blogs",
+                "route": "admin.blogs.index",
+                "color": "text-purple",
+                "permission": "view blogs"
+            }
+        ]
+    },
+    {
+        "title": "Tags",
+        "icon": "ri-price-tag-3-line",
+        "route": "admin.tags.index",
+        "permission": "view tags"
+    },
+    {
+        "title": "Settings",
+        "icon": "mdi:cog-outline",
+        "route": null,
+        "permission": "view settings",
+        "children": [
+            {
+                "title": "General Settings",
+                "route": "admin.settings.index",
+                "color": "text-primary-600",
+                "permission": "view settings"
+            },
+            {
+                "title": "Languages",
+                "route": "admin.languages.index",
+                "color": "text-primary-600",
+                "permission": "view languages"
+            },
+            {
+                "title": "Translations",
+                "route": "admin.translations.index",
+                "color": "text-primary-600",
+                "permission": "view translations"
+            }
+        ]
+    },
+    {
+        "title": "Logs",
+        "icon": "ri-file-list-3-line",
+        "route": null,
+        "permission": "view logs"
+    }
+]
