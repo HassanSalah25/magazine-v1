@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
-use App\Admin;
+use App\Models\Admin;
 use App\Role;
 use Validator;
 use Session;

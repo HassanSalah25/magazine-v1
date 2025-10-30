@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\BcategoryController;
 use App\Http\Controllers\Admin\BlogsectionController;
 use App\Http\Controllers\Admin\CacheController;
 use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\ComparisonController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CtaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DonationController;
+use App\Http\Controllers\Admin\DynamicSectionController;
 use App\Http\Controllers\Admin\EmailController;
 use App\Http\Controllers\Admin\EventCategoryController;
 use App\Http\Controllers\Admin\EventController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FaqsectionController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\FeaturedSliderController;
 use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\ForgetController;
 use App\Http\Controllers\Admin\FreeAnalysisController;
@@ -84,7 +87,7 @@ use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogFaqController;
 use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
@@ -93,6 +96,7 @@ use App\Models\Permalink;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
 use App\Http\Controllers\Admin\HowWeDoItController;
+use App\Http\Controllers\Admin\SponsorController;
 
 /*=======================================================
 ******************** Admin Routes **********************
@@ -402,6 +406,10 @@ Route::group(['prefix' => 'admins', 'middleware' => ['auth:admin', 'checkstatus'
         Route::post('/partner/update', [PartnerController::class, 'update'])->name('admin.partner.update');
         Route::post('/partner/delete', [PartnerController::class, 'delete'])->name('admin.partner.delete');
 
+        // Admin Sponsor Routes (Enhanced)
+        Route::get('/sponsors', [SponsorController::class, 'index'])->name('admin.sponsors.index');
+        Route::post('/sponsor/toggle-status', [SponsorController::class, 'toggleStatus'])->name('admin.sponsor.toggle-status');
+
         // Admin Member Routes
         Route::get('/members', [MemberController::class, 'index'])->name('admin.member.index');
         Route::get('/member/create', [MemberController::class, 'create'])->name('admin.member.create');
@@ -508,6 +516,22 @@ Route::group(['prefix' => 'admins', 'middleware' => ['auth:admin', 'checkstatus'
         Route::post('/blog/bulk-delete', [BlogController::class, 'bulkDelete'])->name('admin.blog.bulk.delete');
         Route::get('/blog/{langid}/getcats', [BlogController::class, 'getcats'])->name('admin.blog.getcats');
         Route::post('/blog/sidebar', [BlogController::class, 'sidebar'])->name('admin.blog.sidebar');
+        Route::post('/blog/carousel', [BlogController::class, 'carousel'])->name('admin.blog.carousel');
+        Route::post('/blog/carousel-order', [BlogController::class, 'updateCarouselOrder'])->name('admin.blog.carousel.order');
+        Route::post('/blog/hot-now', [BlogController::class, 'hotNow'])->name('admin.blog.hot.now');
+        Route::post('/blog/featured-slider', [BlogController::class, 'featuredSlider'])->name('admin.blog.featured.slider');
+        Route::post('/blog/featured-slider-order', [BlogController::class, 'updateFeaturedSliderOrder'])->name('admin.blog.featured.slider.order');
+        Route::get('/blog/carousel-management', [BlogController::class, 'carouselManagement'])->name('admin.blog.carousel.management');
+        
+        // Separate Carousel Management
+        Route::get('/carousel', [CarouselController::class, 'index'])->name('admin.carousel.index');
+        Route::post('/carousel/toggle', [CarouselController::class, 'toggle'])->name('admin.carousel.toggle');
+        Route::post('/carousel/order', [CarouselController::class, 'updateOrder'])->name('admin.carousel.order');
+        
+        // Separate Featured Slider Management
+        Route::get('/featured-slider', [FeaturedSliderController::class, 'index'])->name('admin.featured.slider.index');
+        Route::post('/featured-slider/toggle', [FeaturedSliderController::class, 'toggle'])->name('admin.featured.slider.toggle');
+        Route::post('/featured-slider/order', [FeaturedSliderController::class, 'updateOrder'])->name('admin.featured.slider.order');
 
         // Admin Blog FAQ Routes
         Route::get('/blog/{blogId}/faqs', [BlogFaqController::class, 'index'])->name('admin.blog.faq.index');
@@ -1041,6 +1065,24 @@ Route::group(['prefix' => 'admins', 'middleware' => ['auth:admin', 'checkstatus'
         Route::get('/feedbacks', [FeedbackController::class, 'feedbacks'])->name('admin.client_feedbacks');
         Route::post('/delete_feedback', [FeedbackController::class, 'deleteFeedback'])->name('admin.delete_feedback');
         Route::post('/feedback/bulk-delete', [FeedbackController::class, 'bulkDelete'])->name('admin.feedback.bulk.delete');
+    });
+
+    // Dynamic Sections Routes
+    Route::group(['middleware' => 'checkpermission:Content Management'], function () {
+        Route::resource('dynamic-sections', DynamicSectionController::class)->names([
+            'index' => 'admin.dynamic-sections.index',
+            'create' => 'admin.dynamic-sections.create',
+            'store' => 'admin.dynamic-sections.store',
+            'show' => 'admin.dynamic-sections.show',
+            'edit' => 'admin.dynamic-sections.edit',
+            'update' => 'admin.dynamic-sections.update',
+            'destroy' => 'admin.dynamic-sections.destroy'
+        ]);
+        Route::get('dynamic-sections/{dynamicSection}/manage-posts', [DynamicSectionController::class, 'managePosts'])->name('admin.dynamic-sections.manage-posts');
+        Route::get('dynamic-sections/{dynamicSection}/search-posts', [DynamicSectionController::class, 'searchPosts'])->name('admin.dynamic-sections.search-posts');
+        Route::post('dynamic-sections/{dynamicSection}/assign-post', [DynamicSectionController::class, 'assignPost'])->name('admin.dynamic-sections.assign-post');
+        Route::delete('dynamic-sections/{dynamicSection}/remove-post/{blog}', [DynamicSectionController::class, 'removePost'])->name('admin.dynamic-sections.remove-post');
+        Route::post('dynamic-sections/{dynamicSection}/update-post-order', [DynamicSectionController::class, 'updatePostOrder'])->name('admin.dynamic-sections.update-post-order');
     });
 
    

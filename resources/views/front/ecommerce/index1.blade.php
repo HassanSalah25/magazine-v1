@@ -273,15 +273,16 @@
                 <div class="sponsor-wrapper pt-60 pb-65">
                     <div class="sponsor-slide">
                         @foreach ($partners as $key => $partner)
-                        <div class="sponsor-item">
-                            <a href="{{$partner->url}}" target="_blank"><img data-src="{{asset('assets/front/img/partners/'.$partner->image)}}" class="lazy" alt=""></a>
-                        </div>
+                            @include('front.components.responsive-sponsor', ['partner' => $partner])
                         @endforeach
                     </div>
                 </div>
             </div>
         </section><!--====== End Plus-sponsor Section ======-->
         @endif
+
+        <!-- Google Ads Integration -->
+        @include('front.components.google-ads')
 
 
         @if ($bs->newsletter_section == 1)

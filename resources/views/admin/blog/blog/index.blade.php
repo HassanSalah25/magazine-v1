@@ -67,6 +67,9 @@
                             @endif
                         </div>
                         <div class="col-lg-4 offset-lg-1 mt-2 mt-lg-0">
+                            <a href="{{ route('admin.blog.carousel.management') }}?language={{ request()->input('language') }}" class="btn btn-info float-right btn-sm mr-2">
+                                <i class="fas fa-sliders-h"></i> Carousel Management
+                            </a>
                             <a href="#" class="btn btn-primary float-right btn-sm" data-toggle="modal"
                                data-target="#createModal"><i class="fas fa-plus"></i> Add Blog</a>
                             <button class="btn btn-danger float-right btn-sm mr-2 d-none bulk-delete"
@@ -95,6 +98,9 @@
                                             <th scope="col">Publish Date</th>
                                             <th scope="col">Serial Number</th>
                                             <th scope="col">Sidebar</th>
+                                            <th scope="col">Carousel</th>
+                                            <th scope="col">Featured Slider</th>
+                                            <th scope="col">Hot Now</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                         </thead>
@@ -136,6 +142,68 @@
                                                         </label>
                                                     </form>
 
+                                                </td>
+                                                <td>
+                                                   <form id="carouselForm{{$blog->id}}" class="d-inline-block" action="{{ route('admin.blog.carousel') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="blog_id" value="{{ $blog->id }}">
+                                                        {{-- hidden input عشان يبعت 0 لو الـ checkbox unchecked --}}
+                                                        <input type="hidden" name="show_in_carousel" value="0">
+
+                                                        <label class="status-toggle">
+                                                            <input type="checkbox"
+                                                                name="show_in_carousel"
+                                                                value="1"
+                                                                onchange="document.getElementById('carouselForm{{$blog->id}}').submit();"
+                                                                {{ $blog->show_in_carousel == 1 ? 'checked' : '' }}>
+                                                            <div class="status-toggle-track"></div>
+                                                            <div class="status-toggle-knob">
+                                                                <div class="status-toggle-face status-toggle-face--off"></div>
+                                                                <div class="status-toggle-face status-toggle-face--on"></div>
+                                                            </div>
+                                                        </label>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                   <form id="featuredSliderForm{{$blog->id}}" class="d-inline-block" action="{{ route('admin.blog.featured.slider') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="blog_id" value="{{ $blog->id }}">
+                                                        <input type="hidden" name="show_in_featured_slider" value="0">
+
+                                                        <label class="status-toggle">
+                                                            <input type="checkbox"
+                                                                name="show_in_featured_slider"
+                                                                value="1"
+                                                                onchange="document.getElementById('featuredSliderForm{{$blog->id}}').submit();"
+                                                                {{ $blog->show_in_featured_slider == 1 ? 'checked' : '' }}>
+                                                            <div class="status-toggle-track"></div>
+                                                            <div class="status-toggle-knob">
+                                                                <div class="status-toggle-face status-toggle-face--off"></div>
+                                                                <div class="status-toggle-face status-toggle-face--on"></div>
+                                                            </div>
+                                                        </label>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                   <form id="hotNowForm{{$blog->id}}" class="d-inline-block" action="{{ route('admin.blog.hot.now') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="blog_id" value="{{ $blog->id }}">
+                                                        {{-- hidden input عشان يبعت 0 لو الـ checkbox unchecked --}}
+                                                        <input type="hidden" name="show_in_hot_now" value="0">
+
+                                                        <label class="status-toggle">
+                                                            <input type="checkbox"
+                                                                name="show_in_hot_now"
+                                                                value="1"
+                                                                onchange="document.getElementById('hotNowForm{{$blog->id}}').submit();"
+                                                                {{ $blog->show_in_hot_now == 1 ? 'checked' : '' }}>
+                                                            <div class="status-toggle-track"></div>
+                                                            <div class="status-toggle-knob">
+                                                                <div class="status-toggle-face status-toggle-face--off"></div>
+                                                                <div class="status-toggle-face status-toggle-face--on"></div>
+                                                            </div>
+                                                        </label>
+                                                    </form>
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-secondary btn-sm"

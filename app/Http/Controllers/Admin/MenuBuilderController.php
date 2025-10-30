@@ -30,6 +30,9 @@ class MenuBuilderController extends Controller
         $pages = Page::where('language_id', $lang->id)->get();
         $data["pages"] = $pages;
 
+        // get blog categories for selected language
+        $data["blogCategories"] = $lang->bcategories()->where('status', 1)->orderBy('serial_number', 'ASC')->get();
+
         // get previous menus
         $menu = Menu::where('language_id', $lang->id)->first();
         $data['prevMenu'] = '';
@@ -44,14 +47,15 @@ class MenuBuilderController extends Controller
         // return response()->json(json_decode($request->str, true));
         $menus = json_decode($request->str, true);
         foreach ($menus as $key => $menu) {
-            if (strpos($menu['type'], 'megamenu') !== false) {
+            // Check for mega menus (including blog category mega menus)
+            if (strpos($menu['type'], 'megamenu') !== false || (strpos($menu['type'], 'blog-category-') === 0 && strpos($menu['type'], '-megamenu') !== false)) {
                 if (array_key_exists('children', $menu) && !empty($menu['children'])) {
                     return response()->json(['status' => 'error', 'message' => 'Mega Menu cannot contain children!']);
                 }
             }
             if (array_key_exists('children', $menu) && !empty($menu['children'])) {
                 $allChildren = json_encode($menu['children']);
-                if (strpos($allChildren, '-megamenu') !== false) {
+                if (strpos($allChildren, '-megamenu') !== false || strpos($allChildren, 'blog-category-') !== false) {
                     return response()->json(['status' => 'error', 'message' => 'Mega Menu cannot be children of a Menu!']);
                 }
             }
@@ -67,8 +71,18 @@ class MenuBuilderController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Menu updated successfully!']);
     }
 
-    public function megamenus() {
-        return view('admin.menu_builder.megamenus.megamenus');
+    public function megamenus(Request $request) {
+        $data = [];
+        
+        // Get categories if language is selected
+        if ($request->has('language') && !empty($request->language)) {
+            $lang = Language::where('code', $request->language)->first();
+            if ($lang) {
+                $data['categories'] = $lang->bcategories()->where('status', 1)->orderBy('serial_number', 'ASC')->get();
+            }
+        }
+        
+        return view('admin.menu_builder.megamenus.megamenus', $data);
     }
 
     public function megaMenuEdit(Request $request) {
@@ -130,7 +144,14 @@ class MenuBuilderController extends Controller
 
         // for 'blogs' mega menu
         if ($request->type == 'blogs') {
-            $data['cats'] = $lang->bcategories()->get();
+            // If category_id is provided, filter to show only that category
+            if ($request->has('category_id') && !empty($request->category_id)) {
+                $data['cats'] = $lang->bcategories()->where('id', $request->category_id)->get();
+                $data['single_category'] = true; // Flag to indicate single category mode
+            } else {
+                $data['cats'] = $lang->bcategories()->where('status', 1)->orderBy('serial_number', 'ASC')->get();
+                $data['single_category'] = false;
+            }
             $megamenu = Megamenu::where('language_id', $lang->id)->where('type', 'blogs')->where('category', 1);
             $catStatus = 1;
         }

@@ -47,7 +47,11 @@
         <i class="flaticon-right-arrow"></i>
       </li>
       <li class="nav-item">
-        <a href="#">Add {{$name}} to Mega Menu</a>
+        <a href="#">Add {{$name}} to Mega Menu
+          @if(isset($single_category) && $single_category && isset($cats) && $cats->count() > 0)
+            - {{ convertUtf8($cats->first()->name) }}
+          @endif
+        </a>
       </li>
     </ul>
   </div>
@@ -58,7 +62,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card-title d-inline-block">Add {{$name}} to Mega Menu</div>
+                    <div class="card-title d-inline-block">Add {{$name}} to Mega Menu
+                      @if(isset($single_category) && $single_category && isset($cats) && $cats->count() > 0)
+                        - {{ convertUtf8($cats->first()->name) }}
+                      @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,7 +102,7 @@
                                 } elseif($type == 'events') {
                                     $items = $cat->events;
                                 } elseif($type == 'blogs') {
-                                    $items = $cat->blogs;
+                                    $items = $cat->blogs()->where('language_id', $lang->id)->get();
                                 }
                             @endphp
 

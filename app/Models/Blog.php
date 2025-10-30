@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\TenantAware;
+use App\Traits\ValidatesSlug;
 use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use TenantAware;
+    use TenantAware, ValidatesSlug;
 
     /**
      * The connection name for the model.
@@ -24,7 +25,13 @@ class Blog extends Model
         'serial_number',
         'meta_keywords',
         'meta_description',
-        'status'
+        'status',
+        'show_in_carousel',
+        'carousel_order',
+        'show_in_featured_slider',
+        'featured_slider_order',
+        'show_in_hot_now',
+        'hot_now_order'
     ];
     
     /**
@@ -52,5 +59,13 @@ class Blog extends Model
 
     public function faqs() {
         return $this->hasMany(BlogFaq::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(BlogComment::class);
+    }
+
+    public function approvedComments() {
+        return $this->hasMany(BlogComment::class)->where('status', 'approved');
     }
 }

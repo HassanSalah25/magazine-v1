@@ -1,118 +1,36 @@
-<!-- offcanvas start here -->
-<!-- tp-offcanvus-area-start -->
-<div class="tp-offcanvas-area">
-    <div class="tp-offcanvas-wrapper @@class">
-        <div class="tp-offcanvas-top d-flex align-items-center justify-content-between">
-            <div class="tp-offcanvas-logo">
-                <a href="{{ route('front.index') }}">
-                    <img class="logo-1" data-width="120" src="{{ asset('assets/front/img/'.$bs->logo) }}" alt="Logo">
-                    <img class="logo-2" data-width="120" src="{{ asset('assets/front/img/'.$bs->logo) }}" alt="Logo">
-                </a>
-            </div>
-            <div class="tp-offcanvas-close">
-                <button class="tp-offcanvas-close-btn">
-                    <svg width="37" height="38" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.19141 9.80762L27.5762 28.1924" stroke="currentColor" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9.19141 28.1924L27.5762 9.80761" stroke="currentColor" stroke-width="1.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+<!-- Header start -->
+<header class="uc-header header-seven uc-navbar-sticky-wrap z-999" data-uc-sticky="sel-target: .uc-navbar-container; cls-active: uc-navbar-sticky; cls-inactive: uc-navbar-transparent; end: !*;">
+    <nav class="uc-navbar-container text-gray-900 dark:text-white fs-6 z-1">
+        <div class="uc-top-navbar panel z-3 overflow-hidden bg-primary-600 swiper-parent" style="--uc-nav-height: 32px" data-uc-navbar=" animation: uc-animation-slide-top-small; duration: 150;">
+            <div class="container container-full">
+                <div class="uc-navbar-item">
+                    <div class="swiper swiper-ticker swiper-ticker-sep px-2" style="--uc-ticker-gap: 32px" data-uc-swiper="items: auto; gap: 32; center: true; center-bounds: true; autoplay: 10000; speed: 10000; autoplay-delay: 0.1; loop: true; allowTouchMove: false; freeMode: true; autoplay-disableOnInteraction: true;">
+                        <div class="swiper-wrapper">
+                            @if(isset($breakingNews) && count($breakingNews) > 0)
+                                @foreach($breakingNews as $news)
+                                    <div class="swiper-slide text-white">
+                                        <div class="type-post post panel">
+                                            <a href="{{ route('front.blogdetails', [$news->slug, $news->id]) }}" class="fs-7 fw-normal text-none text-inherit">{{ convertUtf8($news->title) }}</a>
             </div>
         </div>
-        <div class="tp-offcanvas-main">
-            <div class="tp-offcanvas-content d-none d-xl-block">
-                <h3 class="tp-offcanvas-title">{{ __('Hello There!') }}</h3>
-                <p>{{ __('Lorem ipsum dolor sit amet, consectetur adipiscing elit,') }}</p>
-            </div>
-            <div class="tp-offcanvas-menu d-xl-none">
-                <nav></nav>
-            </div>
-            <div class="tp-offcanvas-gallery d-none d-xl-block">
-                <div class="row gx-2">
-                    <div class="col-md-3 col-3">
-                        <div class="tp-offcanvas-gallery-img fix">
-                            <a class="popup-image" href="{{ asset('front/assets/img/offcanvas/offcanvas-1.jpg') }}"><img
-                                    src="{{ asset('front/assets/img/offcanvas/offcanvas-1.jpg') }}" alt=""></a>
+                                @endforeach
+                            @else
+                                <div class="swiper-slide text-white">
+                                    <div class="type-post post panel">
+                                        <a href="#" class="fs-7 fw-normal text-none text-inherit">Welcome to {{ $bs->website_title }}</a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-3">
-                        <div class="tp-offcanvas-gallery-img fix">
-                            <a class="popup-image" href="{{ asset('front/assets/img/offcanvas/offcanvas-2.jpg') }}"><img
-                                    src="{{ asset('front/assets/img/offcanvas/offcanvas-2.jpg') }}" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-3">
-                        <div class="tp-offcanvas-gallery-img fix">
-                            <a class="popup-image" href="{{ asset('front/assets/img/offcanvas/offcanvas-3.jpg') }}"><img
-                                    src="{{ asset('front/assets/img/offcanvas/offcanvas-3.jpg') }}" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-3">
-                        <div class="tp-offcanvas-gallery-img fix">
-                            <a class="popup-image" href="{{ asset('front/assets/img/offcanvas/offcanvas-4.jpg') }}"><img
-                                    src="{{ asset('front/assets/img/offcanvas/offcanvas-4.jpg') }}" alt=""></a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="tp-offcanvas-contact">
-                <h3 class="tp-offcanvas-title sm">{{ __('Information') }}</h3>
-                <ul>
-                    @php $phones = explode(',', $bex->contact_numbers); @endphp
-                    @foreach ($phones as $phone)
-                        <li><a href="tel:{{$phone}}">{{$phone}}</a></li>
-                    @endforeach
-                    @php $mails = explode(',', $bex->contact_mails); @endphp
-                    @foreach ($mails as $mail)
-                        <li><a href="mailto:{{$mail}}">{{$mail}}</a></li>
-                    @endforeach
-
-                    @php $addresses = explode(PHP_EOL, $bex->contact_addresses); @endphp
-                    @foreach ($addresses as $address)
-                        <li><a href="#">{{ $address }}</a></li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="tp-offcanvas-social">
-                <h3 class="tp-offcanvas-title sm">{{ __('Follow Us') }}</h3>
-                <ul>
-                    @if (!empty($socials))
-                        @foreach ($socials as $social)
-                            <li>
-                                <a href="{{ $social->url }}"><i class="{{ $social->icon }}"></i></a>
-                            </li>
-                        @endforeach
-                    @endif
-                </ul>
-            </div>
         </div>
-    </div>
-</div>
-<div class="body-overlay"></div>
-<!-- tp-offcanvus-area-end -->
-<!-- offcanvas end here -->
-<header>
-
-    <!-- header area start -->
-    <div id="header-sticky"
-         class="tp-header-area tp-header-ptb tp-header-blur sticky-white-bg header-transparent tp-header-3-style">
-        <div class="container container-1750">
-            <div class="row align-items-center">
-                <div class="col-xl-1 col-lg-5 col-5">
-                    <div class="tp-header-logo">
-                        <a href="{{ route('front.index') }}">
-                            <img data-width="120"
-                                 src="{{ asset('assets/front/img/'.$bs->logo) }}"
-                                 alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-11 col-lg-7 col-7">
-                    <div class="tp-header-box d-flex align-items-center justify-content-end justify-content-xl-between">
-                        <div class="tp-header-menu tp-header-dropdown dropdown-white-bg d-none d-xl-flex">
-                            <nav class="tp-mobile-menu-active">
-                                <ul>
+        <div class="uc-center-navbar panel hstack z-2 min-h-48px d-none lg:d-flex" data-uc-navbar=" animation: uc-animation-slide-top-small; duration: 150;">
+            <div class="container max-w-xl">
+                <div class="navbar-container hstack border-bottom">
+                    <div class="uc-navbar-center gap-2 lg:gap-3 flex-1">
+                        <ul class="uc-navbar-nav gap-3 justify-between flex-1 fs-6 fw-bold" style="--uc-nav-height: 48px">
                                     @php $links = json_decode($menus, true); @endphp
                                     @foreach ($links as $link)
                                         @php $href = getHref($link); @endphp
@@ -120,106 +38,87 @@
                                             @includeIf('front.default.partials.mega-menu', ['link' => $link])
                                         @elseif (!array_key_exists('children', $link))
                                             <li>
-                                                <a href="{{ $href }}"
-                                                   target="{{ $link['target'] }}">{{ $link['text'] }}</a>
+                                        <a href="{{ $href }}" target="{{ $link['target'] }}">{{ $link['text'] }}</a>
                                             </li>
                                         @else
-                                                <li class="has-dropdown">
-                                                    <a href="{{ $href }}"
-                                                       target="{{ $link['target'] }}">{{ $link['text'] }}</a>
-                                                    <ul class="tp-submenu submenu">
+                                    <li>
+                                        <a href="{{ $href }}" target="{{ $link['target'] }}">{{ $link['text'] }} <span data-uc-navbar-parent-icon></span></a>
+                                        <div class="uc-navbar-dropdown ft-primary text-unset p-3 pb-4 rounded-0 hide-scrollbar" data-uc-drop=" offset: 0; boundary: !.navbar-container; stretch: x; animation: uc-animation-slide-top-small; duration: 150;">
+                                            <div class="row child-cols col-match g-2">
                                                         @foreach ($link['children'] as $child)
                                                             @php $childHref = getHref($child); @endphp
-                                                            @if (array_key_exists('children', $child))
-                                                            <li><a href="{{ $childHref }}"
-                                                                   target="{{ $child['target'] }}">{{ $child['text'] }}</a>
-                                                            </li>
-1
-                                                            <li class="menu-item-has-children">
-                                                                <ul class="tp-submenu submenu">
-                                                                    @foreach ($child['children'] as $grand)
-                                                                        @php $grandHref = getHref($grand); @endphp
-                                                                        <li><a href="{{ $grandHref }}"
-                                                                               target="{{ $grand['target'] }}">{{ $grand['text'] }}</a>
-                                                                        </li>
+                                                    <div class="col-2">
+                                                        <ul class="uc-nav uc-navbar-dropdown-nav">
+                                                            <li><a href="{{ $childHref }}" target="{{ $child['target'] }}">{{ $child['text'] }}</a></li>
+                                                        </ul>
+                                                    </div>
                                                                     @endforeach
-                                                                </ul>
-                                                            </li>
-                                                            @else
-                                                                <li>
-                                                                    <a href="{{ $childHref }}"
-                                                                       target="{{ $child['target'] }}">{{ $child['text'] }}</a>
+                                            </div>
+                                        </div>
                                                                 </li>
                                                             @endif
                                                         @endforeach
                                                     </ul>
-                                                </li>
-
-                                        @endif
-                                    @endforeach
-
-
-                                </ul>
-                            </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uc-bottom-navbar panel z-1">
+            <div class="container max-w-xl">
+                <div class="uc-navbar min-h-72px lg:min-h-100px" data-uc-navbar=" animation: uc-animation-slide-top-small; duration: 150;">
+                    <div class="uc-navbar-left">
+                        <div>
+                            <a class="uc-menu-trigger icon-2" href="#uc-menu-panel" data-uc-toggle></a>
                         </div>
-                        <div class="tp-header-btn d-none d-md-flex align-items-center">
-                            <div class="tp-header-lang d-flex align-items-center mr-20 mx-3">
-                                <div class="dropdown">
-                                    <button class="tp-header-lang-btn" type="button" id="dropdownLang" data-bs-toggle="dropdown">
-                                        @php
-                                            if (session()->has('lang')) {
-                                               app()->setLocale(session()->get('lang'));
-                                             } else {
-                                               $defaultLang = \App\Models\Language::where('is_default', 1)->first();
-                                               if (!empty($defaultLang)) {
-                                                 app()->setLocale($defaultLang->code);
-                                               }
-                                             }
-                                        @endphp
-                                        <i class="fas fa-globe"></i>
-                                        <i class="fas fa-chevron-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu tp-header-lang-list" aria-labelledby="dropdownLang">
-                                        @foreach ($langs as $lang)
-                                            <li class="@if($lang->code == $currentLang->code) yellow-green-bg green-solid @endif">
-                                                <a href="{{ route('changeLanguage', $lang->code) }}"
-                                                   class="text-dark p-2 ">
-                                                    {{ $lang->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                        <div class="uc-navbar-item d-none lg:d-inline-flex">
+                            <a class="btn btn-xs gap-narrow ps-1 border rounded-pill fw-bold dark:text-white hover:bg-gray-25 dark:hover:bg-gray-900" href="#live_now" data-uc-scroll="offset: 128">
+                                <i class="fa-regular fa-circle-dot text-red" style="color:red;" data-uc-animate="flash"></i>
+                                <span>Live</span>
+                            </a>
+                        </div>
+                        <div class="uc-logo d-block md:d-none">
+                            <a href="{{ route('front.index') }}">
+                                <img class="w-100px text-dark dark:text-white" src="{{ asset('assets/front/img/'.$bs->logo) }}" alt="{{ $bs->website_title }}" data-uc-svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="uc-navbar-center">
+                        <div class="uc-logo d-none md:d-block">
+                            <a href="{{ route('front.index') }}">
+                                <img class="w-150px text-dark dark:text-white" src="{{ $bs->logo ? asset('assets/front/img/'.$bs->logo) : asset('front/assets/images/demo-seven/common/logo.svg') }}" alt="{{ $bs->website_title }}" data-uc-svg>
+                            </a>
                                 </div>
                             </div>
-                             <a class="tp-btn-yellow-green green-solid" href="{{ route('front.contact') }}">
-                                <i>
-                                    <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M16 2.5C16 1.675 15.325 1 14.5 1H2.5C1.675 1 1 1.675 1 2.5M16 2.5V11.5C16 12.325 15.325 13 14.5 13H2.5C1.675 13 1 12.325 1 11.5V2.5M16 2.5L8.5 7.75L1 2.5"
-                                            stroke="currentcolor" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"/>
-                                    </svg>
-                                </i>
-                                <span>
-                                        <span class="text-1">{{ __('Request A Quote') }}</span>
-                                        <span class="text-2">{{ __('Request A Quote') }}</span>
-                                    </span>
+                    <div class="uc-navbar-right gap-2 lg:gap-3">
+                        <div class="uc-navbar-item d-inline-flex lg:d-none">
+                            <a class="btn btn-xs gap-narrow ps-1 border rounded-pill fw-bold dark:text-white hover:bg-gray-25 dark:hover:bg-gray-900" href="#live_now" data-uc-scroll="offset: 128">
+                                <i class="fa-regular fa-circle-dot text-red" style="color:red;" data-uc-animate="flash"></i>
+                                <span>Live</span>
                             </a>
-
                         </div>
-                        <div class="tp-header-bar ml-15 d-xl-none">
-                            <button class="tp-offcanvas-open-btn">
-                                <i></i>
-                                <i></i>
-                                <i></i>
-                            </button>
+                        <div class="uc-navbar-item d-none lg:d-inline-flex">
+                            <a class="uc-account-trigger position-relative btn btn-sm border-0 p-0 gap-narrow duration-0 dark:text-white" href="#uc-account-modal" data-uc-toggle>
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </a>
+                        </div>
+                        <div class="uc-navbar-item d-none lg:d-inline-flex">
+                            <a class="uc-search-trigger cstack text-none text-dark dark:text-white" href="#uc-search-modal" data-uc-toggle>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </a>
+                        </div>
+                        <div class="uc-navbar-item d-none lg:d-inline-flex">
+                            <div class="uc-modes-trigger btn btn-xs w-32px h-32px p-0 border fw-normal rounded-circle dark:text-white hover:bg-gray-25 dark:hover:bg-gray-900" data-darkmode-toggle="">
+                                <label class="switch">
+                                    <span class="sr-only">Dark toggle</span>
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- header area end -->
-
+    </nav>
 </header>
+<!-- Header end -->

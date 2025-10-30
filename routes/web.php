@@ -246,6 +246,7 @@ Route::group(['prefix' => 'tenant/{tenant_id}', 'where' => ['tenant_id' => '[^\/
 
         Route::post('/sendmail', [FrontendController::class, 'sendmail'])->name('tenant.front.sendmail');
         Route::post('/subscribe', [FrontendController::class, 'subscribe'])->name('tenant.front.subscribe');
+        Route::post('/blog-comment/store', [FrontendController::class, 'storeBlogComment'])->name('tenant.front.blogcomment.store');
         Route::get('/quote', [FrontendController::class, 'quote'])->name('tenant.front.quote');
         Route::post('/sendquote', [FrontendController::class, 'sendquote'])->name('tenant.front.sendquote');
         Route::get('/quote/success', [FrontendController::class, 'quoteSuccess'])->name('tenant.front.quote.success');
@@ -631,6 +632,7 @@ Route::group(['middleware' => ['setlang', 'forceLowercase']], function () {
 
     Route::post('/sendmail', [FrontendController::class, 'sendmail'])->name('front.sendmail');
     Route::post('/subscribe', [FrontendController::class, 'subscribe'])->name('front.subscribe');
+    Route::post('/blog-comment/store', [FrontendController::class, 'storeBlogComment'])->name('front.blogcomment.store');
     Route::get('/quote', [FrontendController::class, 'quote'])->name('front.quote');
     Route::post('/sendquote', [FrontendController::class, 'sendquote'])->name('front.sendquote');
     Route::get('/quote/success', [FrontendController::class, 'quoteSuccess'])->name('front.quote.success');

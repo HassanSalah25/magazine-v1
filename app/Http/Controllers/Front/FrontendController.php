@@ -97,11 +97,20 @@ class FrontendController extends Controller
                 $q->where('show_in', 1);
             })->orderBy('serial_number', 'ASC')->get();
             $data['members'] = Member::where('language_id', $lang_id)->where('feature', 1)->get();
-            $data['blogs'] = Blog::where('language_id', $lang_id)->orderBy('id', 'DESC')->limit(6)->get();
-            $data['partners'] = Partner::where('language_id', $lang_id)->orderBy('serial_number', 'ASC')->get();
+            $data['carousel_blogs'] = Blog::where('language_id', $lang_id)->where('show_in_carousel', 1)->orderBy('carousel_order', 'ASC')->get();
+            $data['featured_slider_blogs'] = Blog::where('language_id', $lang_id)->where('show_in_featured_slider', 1)->orderBy('featured_slider_order', 'ASC')->get();
+            $data['hot_now_blogs'] = Blog::where('language_id', $lang_id)->where('show_in_hot_now', 1)->orderBy('hot_now_order', 'ASC')->get();
+            $data['latest_blogs'] = Blog::where('language_id', $lang_id)->orderBy('id', 'DESC')->limit(10)->get();
+            $data['featured_blogs'] = Blog::where('language_id', $lang_id)
+                ->withCount('comments')
+                ->orderBy('comments_count', 'DESC')
+                ->limit(4)
+                ->get();
+            $data['partners'] = Partner::where('language_id', $lang_id)->active()->orderBy('serial_number', 'ASC')->get();
+            $data['googleAdsPartners'] = Partner::where('language_id', $lang_id)->active()->googleAds()->orderBy('serial_number', 'ASC')->get();
             $data['packages'] = Package::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
             $data['homePackageCategories'] = PackageCategory::where('language_id', $lang_id)->where('status', 1)->where('show_in_home', 1)->orderBy('serial_number', 'ASC')->get();
-            $data['scategories'] = Scategory::where('language_id', $lang_id)->where('feature', 1)->where('status', 1)->orderBy('serial_number', 'ASC')->get();
+            $data['bcategories'] = Bcategory::where('language_id', $lang_id)->where('status', 1)->orderBy('serial_number', 'ASC')->get();
             if (!serviceCategory()) {
                 $data['services'] = Service::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
             }
@@ -119,6 +128,11 @@ class FrontendController extends Controller
         // Add How We Do It section data
         $data['howWeDoItSection'] = \App\Models\HowWeDoItSection::where('language_id', $currentLang->id)->first();
 
+        // Add dynamic sections data
+        $data['dynamicSections'] = \App\Models\DynamicSection::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
         // Add activeSub for package subscription logic
         if (Auth::check()) {
             $data['activeSub'] = Subscription::where('user_id', Auth::user()->id)->where('status', 1);
@@ -134,127 +148,6 @@ class FrontendController extends Controller
             }
         }
     }
-
-    public function landingpage1()
-    {
-        if (session()->has('lang')) {
-            $currentLang = Language::where('code', session()->get('lang'))->first();
-        } else {
-            $currentLang = Language::where('is_default', 1)->first();
-        }
-        $data['currentLang'] = $currentLang;
-
-        $be = BasicExtended::where('language_id', $currentLang->id)->findOrFail(1);
-        $bex = BasicExtra::where('language_id', $currentLang->id)->findOrFail(1);
-        $bs = BasicSetting::where('language_id', $currentLang->id)->findOrFail(1);
-        $lang_id = $currentLang->id;
-
-        $data['be'] = $be;
-        $data['bex'] = $bex;
-        $data['bs'] = $bs;
-
-        $data['sliders'] = Slider::where('language_id', $lang_id)->where('page_type', 'landingpage1')->orderBy('serial_number', 'ASC')->get();
-        $data['features'] = Feature::where('language_id', $lang_id)->where('page_id', '1')->orderBy('serial_number', 'ASC')->get();
-        $version = $be->theme_version;
-
-        // if home page page builder is disabled
-        if ($bex->home_page_pagebuilder == 0) {
-            $data['portfolios'] = Portfolio::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->limit(10)->get();
-            $data['points'] = Point::where('language_id', $lang_id)->orderBy('serial_number', 'ASC')->get();
-            $data['statistics'] = Statistic::where('language_id', $lang_id)->where('page_id', '1')->orderBy('serial_number', 'ASC')->get();
-            $data['testimonials'] = Testimonial::where('language_id', $lang_id)->where('page_id', '1')->orderBy('serial_number', 'ASC')->get();
-            $data['faqs'] = Faq::whereHas('faqCategory', function ($q) {
-                $q->where('show_in', 1);
-            })->orderBy('serial_number', 'ASC')->get();
-            $data['members'] = Member::where('language_id', $lang_id)->where('feature', 1)->get();
-            $data['blogs'] = Blog::where('language_id', $lang_id)->orderBy('id', 'DESC')->limit(6)->get();
-            $data['partners'] = Partner::where('language_id', $lang_id)->orderBy('serial_number', 'ASC')->get();
-            $data['packages'] = Package::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
-            $data['homePackageCategories'] = PackageCategory::where('language_id', $lang_id)->where('status', 1)->where('show_in_home', 1)->orderBy('serial_number', 'ASC')->get();
-            $data['scategories'] = Scategory::where('language_id', $lang_id)->where('feature', 1)->where('status', 1)->orderBy('serial_number', 'ASC')->get();
-            if (!serviceCategory()) {
-                $data['services'] = Service::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
-            }
-        } // if home page page builder is disabled
-        else {
-            $data['home'] = Home::where('theme', $be->theme_version)->where('language_id', $currentLang->id)->first();
-        }
-
-
-        $data['fcategories'] = Pcategory::where('status', 1)->where('language_id', $currentLang->id)->where('is_feature', 1)->get();
-        $data['hcategories'] = Pcategory::where('status', 1)->where('language_id', $currentLang->id)->where('products_in_home', 1)->get();
-        $data['fproducts'] = Product::where('status', 1)->where('is_feature', 1)->where('language_id', $currentLang->id)->orderBy('id', 'DESC')->limit(10)->get();
-        $data['products'] = Product::where('status', 1)->where('language_id', $currentLang->id)->orderBy('id', 'DESC')->limit(10)->get();
-
-        if ($version == 'default' || $version == 'dark') {
-            if ($bex->home_page_pagebuilder == 1) {
-                return view('front.landingpage1.index', $data);
-            } else {
-                return view('front.landingpage1.index1', $data);
-            }
-        }
-    }
-
-    public function landingpage2()
-    {
-        if (session()->has('lang')) {
-            $currentLang = Language::where('code', session()->get('lang'))->first();
-        } else {
-            $currentLang = Language::where('is_default', 1)->first();
-        }
-        $data['currentLang'] = $currentLang;
-
-        $be = BasicExtended::where('language_id', $currentLang->id)->findOrFail(2);
-        $bex = BasicExtra::where('language_id', $currentLang->id)->findOrFail(2);
-        $bs = BasicSetting::where('language_id', $currentLang->id)->findOrFail(2);
-        $lang_id = $currentLang->id;
-
-        $data['be'] = $be;
-        $data['bex'] = $bex;
-        $data['bs'] = $bs;
-
-        $data['sliders'] = Slider::where('language_id', $lang_id)->where('page_type', 'landingpage2')->orderBy('serial_number', 'ASC')->get();
-        $data['features'] = Feature::where('language_id', $lang_id)->where('page_id', '2')->orderBy('serial_number', 'ASC')->get();
-        $version = $be->theme_version;
-
-        // if home page page builder is disabled
-        if ($bex->home_page_pagebuilder == 0) {
-            $data['portfolios'] = Portfolio::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->limit(10)->get();
-            $data['points'] = Point::where('language_id', $lang_id)->orderBy('serial_number', 'ASC')->get();
-            $data['statistics'] = Statistic::where('language_id', $lang_id)->where('page_id', '2')->orderBy('serial_number', 'ASC')->get();
-            $data['testimonials'] = Testimonial::where('language_id', $lang_id)->where('page_id', '2')->orderBy('serial_number', 'ASC')->get();
-            $data['faqs'] = Faq::whereHas('faqCategory', function ($q) {
-                $q->where('show_in', 1);
-            })->orderBy('serial_number', 'ASC')->get();
-            $data['members'] = Member::where('language_id', $lang_id)->where('feature', 1)->get();
-            $data['blogs'] = Blog::where('language_id', $lang_id)->orderBy('id', 'DESC')->limit(6)->get();
-            $data['partners'] = Partner::where('language_id', $lang_id)->orderBy('serial_number', 'ASC')->get();
-            $data['packages'] = Package::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
-            $data['homePackageCategories'] = PackageCategory::where('language_id', $lang_id)->where('status', 1)->where('show_in_home', 1)->orderBy('serial_number', 'ASC')->get();
-            $data['scategories'] = Scategory::where('language_id', $lang_id)->where('feature', 1)->where('status', 1)->orderBy('serial_number', 'ASC')->get();
-            if (!serviceCategory()) {
-                $data['services'] = Service::where('language_id', $lang_id)->where('feature', 1)->orderBy('serial_number', 'ASC')->get();
-            }
-        } // if home page page builder is disabled
-        else {
-            $data['home'] = Home::where('theme', $be->theme_version)->where('language_id', $currentLang->id)->first();
-        }
-
-
-        $data['fcategories'] = Pcategory::where('status', 1)->where('language_id', $currentLang->id)->where('is_feature', 1)->get();
-        $data['hcategories'] = Pcategory::where('status', 1)->where('language_id', $currentLang->id)->where('products_in_home', 1)->get();
-        $data['fproducts'] = Product::where('status', 1)->where('is_feature', 1)->where('language_id', $currentLang->id)->orderBy('id', 'DESC')->limit(10)->get();
-        $data['products'] = Product::where('status', 1)->where('language_id', $currentLang->id)->orderBy('id', 'DESC')->limit(10)->get();
-
-        if ($version == 'default' || $version == 'dark') {
-            if ($bex->home_page_pagebuilder == 1) {
-                return view('front.landingpage2.index', $data);
-            } else {
-                return view('front.landingpage2.index1', $data);
-            }
-        }
-    }
-
 
     public function services(Request $request, $slug = null)
     {
@@ -944,6 +837,32 @@ class FrontendController extends Controller
         $data['version'] = $version;
 
         return view('front.blog-details', $data);
+    }
+
+    public function storeBlogComment(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'blog_id' => 'required|exists:blogs,id',
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'comment' => 'required|string',
+            'parent_id' => 'nullable|exists:blog_comments,id'
+        ]);
+
+        $blog = Blog::findOrFail($request->blog_id);
+
+        $comment = new \App\Models\BlogComment();
+        $comment->blog_id = $request->blog_id;
+        $comment->name = $request->name;
+        $comment->email = $request->email;
+        $comment->comment = $request->comment;
+        $comment->parent_id = $request->parent_id ?? null;
+        $comment->status = 'pending'; // Comments need approval
+        $comment->save();
+
+        session()->flash('success', __('Your comment has been submitted successfully and is pending approval.'));
+        
+        return redirect()->route('front.blogdetails', $blog->slug);
     }
 
     public function knowledgebase()

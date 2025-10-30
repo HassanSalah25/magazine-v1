@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $staffs = App\Admin::select('id','username')->get();
+    $staffs = App\Models\Admin::select('id','username')->get();
 @endphp
 <div class="page-header">
    <h4 class="page-title">

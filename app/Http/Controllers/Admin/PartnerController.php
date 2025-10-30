@@ -49,13 +49,21 @@ class PartnerController extends Controller
 
         $rules = [
             'language_id' => 'required',
+            'name' => 'required|string|max:255',
             'image' => 'required',
             'url' => 'required|max:255',
             'serial_number' => 'required|integer',
+            'is_active' => 'boolean',
+            'is_google_ads' => 'boolean',
         ];
 
         if ($request->filled('image')) {
             $rules['image'] = [ ];
+        }
+
+        if ($request->is_google_ads) {
+            $rules['google_ads_script'] = 'required|string';
+            $rules['google_ads_placement'] = 'required|string';
         }
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -66,8 +74,18 @@ class PartnerController extends Controller
 
         $partner = new Partner;
         $partner->language_id = $request->language_id;
+        $partner->name = $request->name;
+        $partner->description = $request->description;
         $partner->url = $request->url;
         $partner->serial_number = $request->serial_number;
+        $partner->image_alt = $request->image_alt;
+        $partner->mobile_image_alt = $request->mobile_image_alt;
+        $partner->is_active = $request->has('is_active') ? true : false;
+        $partner->is_google_ads = $request->has('is_google_ads') ? true : false;
+        $partner->google_ads_script = $request->google_ads_script;
+        $partner->google_ads_placement = $request->google_ads_placement;
+        $partner->start_date = $request->start_date;
+        $partner->end_date = $request->end_date;
 
         if ($request->filled('id')) {
             $partner->page_id = $request->id;
@@ -77,6 +95,14 @@ class PartnerController extends Controller
             $filename = uniqid() .'.'. $extImage;
             @copy($image, 'assets/front/img/partners/' . $filename);
             $partner->image = $filename;
+        }
+
+        if ($request->filled('mobile_image')) {
+            $mobileImage = $request->mobile_image;
+            $extMobileImage = pathinfo($mobileImage, PATHINFO_EXTENSION);
+            $mobileFilename = uniqid() .'.'. $extMobileImage;
+            @copy($mobileImage, 'assets/front/img/partners/' . $mobileFilename);
+            $partner->mobile_image = $mobileFilename;
         }
 
         $partner->save();
@@ -92,12 +118,20 @@ class PartnerController extends Controller
         $extImage = pathinfo($image, PATHINFO_EXTENSION);
 
         $rules = [
+            'name' => 'required|string|max:255',
             'url' => 'required|max:255',
             'serial_number' => 'required|integer',
+            'is_active' => 'boolean',
+            'is_google_ads' => 'boolean',
         ];
 
         if ($request->filled('image')) {
             $rules['image'] = [     ];
+        }
+
+        if ($request->is_google_ads) {
+            $rules['google_ads_script'] = 'required|string';
+            $rules['google_ads_placement'] = 'required|string';
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -107,14 +141,35 @@ class PartnerController extends Controller
         }
 
         $partner = Partner::findOrFail($request->partner_id);
+        $partner->name = $request->name;
+        $partner->description = $request->description;
         $partner->url = $request->url;
         $partner->serial_number = $request->serial_number;
+        $partner->image_alt = $request->image_alt;
+        $partner->mobile_image_alt = $request->mobile_image_alt;
+        $partner->is_active = $request->has('is_active') ? true : false;
+        $partner->is_google_ads = $request->has('is_google_ads') ? true : false;
+        $partner->google_ads_script = $request->google_ads_script;
+        $partner->google_ads_placement = $request->google_ads_placement;
+        $partner->start_date = $request->start_date;
+        $partner->end_date = $request->end_date;
 
         if ($request->filled('image')) {
             @unlink('assets/front/img/partners/' . $partner->image);
             $filename = uniqid() .'.'. $extImage;
             @copy($image, 'assets/front/img/partners/' . $filename);
             $partner->image = $filename;
+        }
+
+        if ($request->filled('mobile_image')) {
+            if ($partner->mobile_image) {
+                @unlink('assets/front/img/partners/' . $partner->mobile_image);
+            }
+            $mobileImage = $request->mobile_image;
+            $extMobileImage = pathinfo($mobileImage, PATHINFO_EXTENSION);
+            $mobileFilename = uniqid() .'.'. $extMobileImage;
+            @copy($mobileImage, 'assets/front/img/partners/' . $mobileFilename);
+            $partner->mobile_image = $mobileFilename;
         }
 
         $partner->save();
@@ -128,6 +183,9 @@ class PartnerController extends Controller
 
         $partner = Partner::findOrFail($request->partner_id);
         @unlink('assets/front/img/partners/' . $partner->image);
+        if ($partner->mobile_image) {
+            @unlink('assets/front/img/partners/' . $partner->mobile_image);
+        }
         $partner->delete();
 
         Session::flash('success', 'Partner deleted successfully!');

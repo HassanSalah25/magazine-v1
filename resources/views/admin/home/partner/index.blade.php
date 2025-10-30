@@ -75,10 +75,29 @@ $selLang = \App\Models\Language::where('code', request()->input('language'))->fi
                         @else
                         <div class="row">
                             @foreach ($partners as $key => $partner)
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <img src="{{asset('assets/front/img/partners/'.$partner->image)}}" alt="" style="width:100%;">
+                                        <img src="{{asset('assets/front/img/partners/'.$partner->image)}}" alt="{{$partner->image_alt ?? $partner->name}}" style="width:100%; height: 150px; object-fit: cover;">
+                                        <div class="mt-2">
+                                            <h6 class="card-title">{{$partner->name}}</h6>
+                                            @if($partner->description)
+                                                <p class="card-text text-muted small">{{Str::limit($partner->description, 100)}}</p>
+                                            @endif
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    @if($partner->is_google_ads)
+                                                        <span class="badge badge-info">Google Ads</span>
+                                                    @endif
+                                                    @if($partner->is_active)
+                                                        <span class="badge badge-success">Active</span>
+                                                    @else
+                                                        <span class="badge badge-secondary">Inactive</span>
+                                                    @endif
+                                                </small>
+                                                <small class="text-muted">#{{$partner->serial_number}}</small>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-footer text-center">
                                         <a class="btn btn-secondary btn-sm mr-2" href="{{route('admin.partner.edit', $partner->id) . '?language=' . request()->input('language')}}">
@@ -155,6 +174,42 @@ $selLang = \App\Models\Language::where('code', request()->input('language'))->fi
                     <p id="errlanguage_id" class="mb-0 text-danger em"></p>
                 </div>
                 <div class="form-group">
+                    <label for="">Partner Name **</label>
+                    <input type="text" class="form-control" name="name" value="" placeholder="Enter Partner Name">
+                    <p id="errname" class="mb-0 text-danger em"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">Description</label>
+                    <textarea class="form-control" name="description" rows="3" placeholder="Enter Description"></textarea>
+                    <p id="errdescription" class="mb-0 text-danger em"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">Image Alt Text</label>
+                    <input type="text" class="form-control" name="image_alt" value="" placeholder="Enter Alt Text for Desktop Image">
+                    <p id="errimage_alt" class="mb-0 text-danger em"></p>
+                </div>
+                
+                {{-- Mobile Image Part --}}
+                <div class="form-group">
+                    <label for="">Mobile Image</label>
+                    <br>
+                    <div class="thumb-preview" id="thumbPreview2">
+                        <img src="{{asset('assets/admin/img/noimage.jpg')}}" alt="Mobile Image">
+                    </div>
+                    <br>
+                    <br>
+                    <input id="fileInput2" type="hidden" name="mobile_image">
+                    <button id="chooseImage2" class="choose-image btn btn-info" type="button" data-multiple="false" data-toggle="modal" data-target="#lfmModal2">Choose Mobile Image</button>
+                    <p class="text-warning mb-0">JPG, PNG, JPEG, SVG images are allowed</p>
+                    <p class="em text-danger mb-0" id="errmobile_image"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="">Mobile Image Alt Text</label>
+                    <input type="text" class="form-control" name="mobile_image_alt" value="" placeholder="Enter Alt Text for Mobile Image">
+                    <p id="errmobile_image_alt" class="mb-0 text-danger em"></p>
+                </div>
+                <div class="form-group">
                     <label for="">URL **</label>
                     <input type="text" class="form-control ltr" name="url" value="" placeholder="Enter URL">
                     <p id="errurl" class="mb-0 text-danger em"></p>
@@ -164,6 +219,48 @@ $selLang = \App\Models\Language::where('code', request()->input('language'))->fi
                     <input type="number" class="form-control ltr" name="serial_number" value="" placeholder="Enter Serial Number">
                     <p id="errserial_number" class="mb-0 text-danger em"></p>
                     <p class="text-warning"><small>The higher the serial number is, the later the partner will be shown.</small></p>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="is_active" id="is_active" checked>
+                        <label class="form-check-label" for="is_active">
+                            Active
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="is_google_ads" id="is_google_ads">
+                        <label class="form-check-label" for="is_google_ads">
+                            Google Ads Partner
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="google_ads_fields" style="display: none;">
+                    <label for="">Google Ads Script</label>
+                    <textarea class="form-control" name="google_ads_script" rows="3" placeholder="Enter Google Ads Script"></textarea>
+                    <p id="errgoogle_ads_script" class="mb-0 text-danger em"></p>
+                </div>
+                <div class="form-group" id="google_ads_placement_field" style="display: none;">
+                    <label for="">Google Ads Placement</label>
+                    <input type="text" class="form-control" name="google_ads_placement" placeholder="Enter Placement (e.g., header, sidebar, footer)">
+                    <p id="errgoogle_ads_placement" class="mb-0 text-danger em"></p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Start Date</label>
+                            <input type="datetime-local" class="form-control" name="start_date">
+                            <p id="errstart_date" class="mb-0 text-danger em"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">End Date</label>
+                            <input type="datetime-local" class="form-control" name="end_date">
+                            <p id="errend_date" class="mb-0 text-danger em"></p>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -186,11 +283,34 @@ $selLang = \App\Models\Language::where('code', request()->input('language'))->fi
         </div>
     </div>
 </div>
+
+<!-- Mobile Image LFM Modal -->
+<div class="modal fade lfm-modal" id="lfmModal2" tabindex="-1" role="dialog" aria-labelledby="lfmModalTitle2" aria-hidden="true">
+    <i class="fas fa-times-circle"></i>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <iframe src="{{url('laravel-filemanager')}}?serial=2" style="width: 100%; height: 500px; overflow: hidden; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
     $(document).ready(function() {
+
+        // Toggle Google Ads fields
+        $('#is_google_ads').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#google_ads_fields').show();
+                $('#google_ads_placement_field').show();
+            } else {
+                $('#google_ads_fields').hide();
+                $('#google_ads_placement_field').hide();
+            }
+        });
 
         // make input fields RTL
         $("select[name='language_id']").on('change', function() {

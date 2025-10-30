@@ -80,7 +80,7 @@
                 @foreach ($ticket->messages as $reply)
                     @if(!$reply->user_id)
                     @php
-                        $admin = App\Admin::find($ticket->admin_id);
+                        $admin = App\Models\Admin::find($ticket->admin_id);
                     @endphp
                    <div class="item-list">
                       <div class="avatar">

@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\LandingSectionSeeder;
+use Database\Seeders\SectionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,10 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            PackageFormBuilderSeeder::class,
-            PackageWithRelationsSeeder::class,
-            QuoteBuilderSeeder::class,
-            TenantDataSeeder::class,
+            SectionSeeder::class,
         ]);
 
     }

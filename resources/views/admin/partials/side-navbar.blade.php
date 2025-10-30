@@ -77,11 +77,12 @@ $data = \App\Models\BasicExtra::first();
                 @endif
 
 
-            {{--@if (empty($admin->role) || (!empty($permissions) && in_array('Theme & Home', $permissions)))
-                --}}{{-- Dynamic Pages --}}{{--
+            @if (empty($admin->role) || (!empty($permissions) && in_array('Theme & Home', $permissions)))
+                {{-- Dynamic Pages --}}
                 <li class="nav-item
                     @if(request()->path() == 'admins/home-settings') active
                     @elseif(request()->path() == 'admins/home-page') active
+                    @elseif(request()->path() == 'admins/blog/carousel-management') active
                     @endif">
                     <a data-toggle="collapse" href="#themeHome">
                     <i class="la flaticon-file"></i>
@@ -95,6 +96,7 @@ $data = \App\Models\BasicExtra::first();
                     <div class="collapse
                         @if(request()->path() == 'admins/home-settings') show
                         @elseif(request()->path() == 'admins/home-page') show
+                        @elseif(request()->path() == 'admins/blog/carousel-management') show
                         @endif" id="themeHome">
                         <ul class="nav nav-collapse">
                             <li class="@if(request()->path() == 'admins/home-settings') active @endif">
@@ -110,10 +112,15 @@ $data = \App\Models\BasicExtra::first();
                                 </a>
                             </li>
                             @endif
+                            <li class="@if(request()->path() == 'admins/blog/carousel-management') active @endif">
+                                <a href="{{route('admin.blog.carousel.management') . '?language=' . $default->code}}">
+                                    <span class="sub-item">Blog Carousel Management</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
-            @endif--}}
+            @endif
 
 
         @if (empty($admin->role) || (!empty($permissions) && in_array('Menu Builder', $permissions)))
@@ -165,6 +172,49 @@ $data = \App\Models\BasicExtra::first();
 @includeIf('admin.partials.content-management')
 @endif
 
+{{-- Blog Management --}}
+@if (empty($admin->role) || (!empty($permissions) && in_array('Content Management', $permissions)))
+<li class="nav-item
+@if(request()->path() == 'admins/bcategorys') active
+@elseif(request()->path() == 'admins/blogs') active
+@elseif(request()->path() == 'admins/archives') active
+@elseif(request()->is('admins/blog/*/edit')) active
+@endif">
+<a data-toggle="collapse" href="#blogManagement">
+    <i class="la flaticon-edit"></i>
+    <p>Blog Management</p>
+    <span class="caret"></span>
+</a>
+<div class="collapse
+@if(request()->path() == 'admins/bcategorys') show
+@elseif(request()->path() == 'admins/blogs') show
+@elseif(request()->path() == 'admins/archives') show
+@elseif(request()->is('admins/blog/*/edit')) show
+@endif" id="blogManagement">
+<ul class="nav nav-collapse">
+    <li class="@if(request()->path() == 'admins/bcategorys') active @endif">
+        <a href="{{route('admin.bcategory.index') . '?language=' . $default->code}}">
+            <span class="sub-item">Category</span>
+        </a>
+    </li>
+    <li class="
+        @if(request()->path() == 'admins/blogs') active
+        @elseif(request()->is('admins/blog/*/edit')) active
+        @endif">
+        <a href="{{route('admin.blog.index') . '?language=' . $default->code}}">
+            <span class="sub-item">Blogs</span>
+        </a>
+    </li>
+    <li class="@if(request()->path() == 'admins/archives') active @endif">
+        <a href="{{route('admin.archive.index')}}">
+            <span class="sub-item">Archives</span>
+        </a>
+    </li>
+</ul>
+</div>
+</li>
+@endif
+
 
 @if (empty($admin->role) || (!empty($permissions) && in_array('Pages', $permissions)))
 {{-- Dynamic Pages --}}
@@ -199,641 +249,6 @@ $data = \App\Models\BasicExtra::first();
     <li class="@if(request()->path() == 'admins/pages') active @endif">
         <a href="{{route('admin.page.index') . '?language=' . $default->code}}">
             <span class="sub-item">Pages</span>
-        </a>
-    </li>
-</ul>
-</div>
-</li>
-@endif
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Event Calendar', $permissions)))
-{{-- Event Calendar --}}
-<li class="nav-item
-@if(request()->path() == 'admins/calendars') active
-@endif">
-<a href="{{route('admin.calendar.index') . '?language=' . $default->code}}">
-    <i class="la flaticon-calendar"></i>
-    <p>Event Calendar</p>
-</a>
-</li>
-@endif
-
-
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Package Management', $permissions)))
-{{-- Package Management --}}
-<li class="nav-item
-@if(request()->path() == 'admins/packages') active
-@elseif(request()->routeIs('admin.package.edit')) active
-@elseif(request()->path() == 'admins/package/form') active
-@elseif(request()->is('admins/package/*/inputEdit')) active
-@elseif(request()->path() == 'admins/all/orders') active
-@elseif(request()->path() == 'admins/pending/orders') active
-@elseif(request()->path() == 'admins/processing/orders') active
-@elseif(request()->path() == 'admins/completed/orders') active
-@elseif(request()->path() == 'admins/rejected/orders') active
-@elseif(request()->path() == 'admins/package/settings') active
-@elseif(request()->path() == 'admins/package/categories') active
-@elseif(request()->routeIs('admin.subscriptions')) active
-@elseif(request()->path() == 'admins/package/order/report') active
-@endif"
->
-<a data-toggle="collapse" href="#packages">
-    <i class="la flaticon-box-1"></i>
-    <p>Package Management</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/packages') show
-@elseif(request()->routeIs('admin.package.edit')) show
-@elseif(request()->path() == 'admins/package/form') show
-@elseif(request()->is('admins/package/*/inputEdit')) show
-@elseif(request()->path() == 'admins/all/orders') show
-@elseif(request()->path() == 'admins/pending/orders') show
-@elseif(request()->path() == 'admins/processing/orders') show
-@elseif(request()->path() == 'admins/completed/orders') show
-@elseif(request()->path() == 'admins/rejected/orders') show
-@elseif(request()->path() == 'admins/package/settings') show
-@elseif(request()->path() == 'admins/package/categories') show
-@elseif(request()->routeIs('admin.subscriptions')) show
-@elseif(request()->path() == 'admins/package/order/report') show
-@endif" id="packages"
->
-<ul class="nav nav-collapse">
-    <li class="@if(request()->path() == 'admins/package/settings') active @endif">
-        <a href="{{route('admin.package.settings')}}">
-            <span class="sub-item">Settings</span>
-        </a>
-    </li>
-    @if ($data->package_category_status == 1)
-    <li class="@if(request()->path() == 'admins/package/categories') active @endif">
-        <a href="{{route('admin.package.categories') . '?language=' . $default->code}}">
-            <span class="sub-item">Categories</span>
-        </a>
-    </li>
-    @endif
-    <li class="@if(request()->path() == 'admins/package/form') active
-        @elseif(request()->is('admins/package/*/inputEdit')) active
-        @endif"
-        >
-        <a href="{{route('admin.package.form') . '?language=' . $default->code}}">
-            <span class="sub-item">Form Builder</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/packages') active
-        @elseif(request()->routeIs('admin.package.edit')) active
-        @endif"
-        >
-        <a href="{{route('admin.package.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Packages</span>
-        </a>
-    </li>
-    @if ($bex->recurring_billing == 1)
-    <li class="submenu">
-        <a data-toggle="collapse" href="#manageSubscriptions"
-        aria-expanded="{{((request()->routeIs('admin.subscriptions') && request()->input('type') != 'request')) ? 'true' : 'false' }}">
-        <span class="sub-item">Subscriptions</span>
-        <span class="caret"></span>
-    </a>
-    <div class="collapse @if((request()->routeIs('admin.subscriptions') && request()->input('type') != 'request')) show @endif" id="manageSubscriptions" style="">
-        <ul class="nav nav-collapse subnav">
-            <li class="@if(request()->routeIs('admin.subscriptions') && request()->input('type') == 'all') active @endif">
-                <a href="{{route('admin.subscriptions', ['type' => 'all'])}}">
-                    <span class="sub-item">All Subscriptions</span>
-                </a>
-            </li>
-            <li class="@if(request()->routeIs('admin.subscriptions') && request()->input('type') == 'active') active @endif">
-                <a href="{{route('admin.subscriptions', ['type' => 'active'])}}">
-                    <span class="sub-item">Active Subscriptions</span>
-                </a>
-            </li>
-            <li class="@if(request()->routeIs('admin.subscriptions') && request()->input('type') == 'expired') active @endif">
-                <a href="{{route('admin.subscriptions', ['type' => 'expired'])}}">
-                    <span class="sub-item">Expired Subscriptions</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="@if(request()->routeIs('admin.subscriptions') && request()->input('type') == 'request') active @endif">
-    <a href="{{route('admin.subscriptions', ['type' => 'request'])}}">
-        <span class="sub-item">Subscription Requests</span>
-    </a>
-</li>
-@endif
-@if ($bex->recurring_billing == 0)
-<li class="submenu">
-    <a data-toggle="collapse" href="#packageOrders"
-    aria-expanded="{{(request()->path() == 'admins/all/orders' || request()->path() == 'admins/pending/orders' || request()->path() == 'admins/processing/orders' || request()->path() == 'admins/completed/orders' || request()->path() == 'admins/rejected/orders' || request()->path() == 'admins/package/order/report') ? 'true' : 'false' }}">
-    <span class="sub-item">Manage Orders</span>
-    <span class="caret"></span>
-</a>
-<div class="collapse {{(request()->path() == 'admins/all/orders' || request()->path() == 'admins/pending/orders' || request()->path() == 'admins/processing/orders' || request()->path() == 'admins/completed/orders' || request()->path() == 'admins/package/order/report') ? 'show' : '' }}" id="packageOrders" style="">
-    <ul class="nav nav-collapse subnav">
-        <li class="@if(request()->path() == 'admins/all/orders') active @endif">
-            <a href="{{route('admin.all.orders')}}">
-                <span class="sub-item">All Orders</span>
-            </a>
-        </li>
-        <li class="@if(request()->path() == 'admins/pending/orders') active @endif">
-            <a href="{{route('admin.pending.orders')}}">
-                <span class="sub-item">Pending Orders</span>
-            </a>
-        </li>
-        <li class="@if(request()->path() == 'admins/processing/orders') active @endif">
-            <a href="{{route('admin.processing.orders')}}">
-                <span class="sub-item">Processing Orders</span>
-            </a>
-        </li>
-        <li class="@if(request()->path() == 'admins/completed/orders') active @endif">
-            <a href="{{route('admin.completed.orders')}}">
-                <span class="sub-item">Completed Orders</span>
-            </a>
-        </li>
-        <li class="@if(request()->path() == 'admins/rejected/orders') active @endif">
-            <a href="{{route('admin.rejected.orders')}}">
-                <span class="sub-item">Rejected Orders</span>
-            </a>
-        </li>
-        <li class="@if(request()->path() == 'admins/package/order/report') active @endif">
-            <a href="{{route('admin.package.report')}}">
-                <span class="sub-item">Report</span>
-            </a>
-        </li>
-    </ul>
-</div>
-</li>
-@endif
-</ul>
-</div>
-</li>
-@endif
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Quote Management', $permissions)))
-{{-- Quotes --}}
-<li class="nav-item
-@if(request()->path() == 'admins/quote/form') active
-@elseif(request()->is('admins/quote/*/inputEdit')) active
-@elseif(request()->path() == 'admins/all/quotes') active
-@elseif(request()->path() == 'admins/pending/quotes') active
-@elseif(request()->path() == 'admins/processing/quotes') active
-@elseif(request()->path() == 'admins/completed/quotes') active
-@elseif(request()->path() == 'admins/rejected/quotes') active
-@elseif(request()->path() == 'admins/quote/visibility') active
-@endif">
-<a data-toggle="collapse" href="#quote">
-    <i class="la flaticon-list"></i>
-    <p>Quote Management</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/quote/form') show
-@elseif(request()->is('admins/quote/*/inputEdit')) show
-@elseif(request()->path() == 'admins/all/quotes') show
-@elseif(request()->path() == 'admins/pending/quotes') show
-@elseif(request()->path() == 'admins/processing/quotes') show
-@elseif(request()->path() == 'admins/completed/quotes') show
-@elseif(request()->path() == 'admins/rejected/quotes') show
-@elseif(request()->path() == 'admins/quote/visibility') show
-@endif" id="quote">
-<ul class="nav nav-collapse">
-    <li class="
-    @if(request()->path() == 'admins/quote/visibility') active
-    @endif">
-    <a href="{{route('admin.quote.visibility')}}">
-        <span class="sub-item">Visibility</span>
-    </a>
-</li>
-<li class="
-@if(request()->path() == 'admins/quote/form') active
-@elseif(request()->is('admins/quote/*/inputEdit')) active
-@endif">
-<a href="{{route('admin.quote.form') . '?language=' . $default->code}}">
-    <span class="sub-item">Form Builder</span>
-</a>
-</li>
-<li class="@if(request()->path() == 'admins/all/quotes') active @endif">
-    <a href="{{route('admin.all.quotes')}}">
-        <span class="sub-item">All Quotes</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/pending/quotes') active @endif">
-    <a href="{{route('admin.pending.quotes')}}">
-        <span class="sub-item">Pending Quotes</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/processing/quotes') active @endif">
-    <a href="{{route('admin.processing.quotes')}}">
-        <span class="sub-item">Processing Quotes</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/completed/quotes') active @endif">
-    <a href="{{route('admin.completed.quotes')}}">
-        <span class="sub-item">Completed Quotes</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/rejected/quotes') active @endif">
-    <a href="{{route('admin.rejected.quotes')}}">
-        <span class="sub-item">Rejected Quotes</span>
-    </a>
-</li>
-</ul>
-</div>
-</li>
-@endif
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Shop Management', $permissions)))
-{{-- Product --}}
-<li class="nav-item
-@if(request()->path() == 'admins/category') active
-@elseif(request()->path() == 'admins/product') active
-@elseif(request()->routeIs('admin.product.type')) active
-@elseif(request()->is('admins/product/*/edit')) active
-@elseif(request()->is('admins/category/*/edit')) active
-@elseif(request()->path() == 'admins/product/all/orders') active
-@elseif(request()->path() == 'admins/product/pending/orders') active
-@elseif(request()->path() == 'admins/product/processing/orders') active
-@elseif(request()->path() == 'admins/product/completed/orders') active
-@elseif(request()->path() == 'admins/product/rejected/orders') active
-@elseif(request()->routeIs('admin.product.create')) active
-@elseif(request()->routeIs('admin.product.details')) active
-@elseif(request()->path() == 'admins/coupon') active
-@elseif(request()->routeIs('admin.coupon.edit')) active
-@elseif(request()->path() == 'admins/shipping') active
-@elseif(request()->routeIs('admin.shipping.edit')) active
-@elseif(request()->routeIs('admin.product.tags')) active
-@elseif(request()->routeIs('admin.product.settings')) active
-@elseif(request()->path() == 'admins/product/orders/report') active
-@endif">
-<a data-toggle="collapse" href="#category">
-    <i class="fas fa-store-alt"></i>
-    <p>Shop Management</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/category') show
-@elseif(request()->is('admins/category/*/edit')) show
-@elseif(request()->routeIs('admin.product.type')) show
-@elseif(request()->path() == 'admins/product') show
-@elseif(request()->is('admins/product/*/edit')) show
-@elseif(request()->path() == 'admins/product/all/orders') show
-@elseif(request()->path() == 'admins/product/pending/orders') show
-@elseif(request()->path() == 'admins/product/processing/orders') show
-@elseif(request()->path() == 'admins/product/completed/orders') show
-@elseif(request()->path() == 'admins/product/rejected/orders') show
-@elseif(request()->routeIs('admin.product.create')) show
-@elseif(request()->routeIs('admin.product.details')) show
-@elseif(request()->path() == 'admins/coupon') show
-@elseif(request()->routeIs('admin.coupon.edit')) show
-@elseif(request()->path() == 'admins/shipping') show
-@elseif(request()->routeIs('admin.shipping.edit')) show
-@elseif(request()->routeIs('admin.product.tags')) show
-@elseif(request()->routeIs('admin.product.settings')) show
-@elseif(request()->path() == 'admins/product/orders/report') show
-@endif" id="category">
-<ul class="nav nav-collapse">
-    <li class="@if(request()->routeIs('admin.product.settings')) active @endif">
-        <a href="{{route('admin.product.settings')}}">
-            <span class="sub-item">Settings</span>
-        </a>
-    </li>
-    <li class="@if(request()->routeIs('admin.product.tags')) active @endif">
-        <a href="{{route('admin.product.tags'). '?language=' . $default->code}}">
-            <span class="sub-item">Popular Tags</span>
-        </a>
-    </li>
-
-    @if ($bex->catalog_mode == 0)
-    <li class="
-    @if(request()->path() == 'admins/shipping') active
-    @elseif(request()->routeIs('admin.shipping.edit')) active
-    @endif">
-    <a href="{{route('admin.shipping.index'). '?language=' . $default->code}}">
-        <span class="sub-item">Shipping Charges</span>
-    </a>
-</li>
-@endif
-
-@if ($bex->catalog_mode == 0)
-<li class="
-@if(request()->path() == 'admins/coupon') active
-@elseif(request()->routeIs('admin.coupon.edit')) active
-@endif">
-<a href="{{route('admin.coupon.index')}}">
-    <span class="sub-item">Coupons</span>
-</a>
-</li>
-@endif
-<li class="submenu">
-    <a data-toggle="collapse" href="#productManagement"
-    aria-expanded="{{(request()->path() == 'admins/category' || request()->is('admins/category/*/edit') || request()->routeIs('admin.product.type') || request()->routeIs('admin.product.create') || request()->routeIs('admin.product.index') || request()->routeIs('admin.product.edit')) ? 'true' : 'false' }}">
-    <span class="sub-item">Manage Products</span>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/category') show
-@elseif(request()->is('admins/category/*/edit')) show
-@elseif(request()->routeIs('admin.product.type')) show
-@elseif(request()->routeIs('admin.product.create')) show
-@elseif(request()->routeIs('admin.product.index')) show
-@elseif(request()->routeIs('admin.product.edit')) show
-@endif" id="productManagement" style="">
-<ul class="nav nav-collapse subnav">
-    <li class="
-    @if(request()->path() == 'admins/category') active
-    @elseif(request()->is('admins/category/*/edit')) active
-    @endif">
-    <a href="{{route('admin.category.index') . '?language=' . $default->code}}">
-        <span class="sub-item">Category</span>
-    </a>
-</li>
-<li class="
-@if(request()->routeIs('admin.product.type')) active
-@elseif(request()->routeIs('admin.product.create')) active
-@endif">
-<a href="{{route('admin.product.type')}}">
-    <span class="sub-item">Add Product</span>
-</a>
-</li>
-<li class="
-@if(request()->path() == 'admins/product') active
-@elseif(request()->is('admins/product/*/edit')) active
-@endif">
-<a href="{{route('admin.product.index'). '?language=' . $default->code}}">
-    <span class="sub-item">Products</span>
-</a>
-</li>
-</ul>
-</div>
-</li>
-
-@if ($bex->catalog_mode == 0)
-<li class="submenu">
-    <a data-toggle="collapse" href="#manageOrders"
-    aria-expanded="{{(request()->routeIs('admin.all.product.orders') || request()->routeIs('admin.pending.product.orders') || request()->routeIs('admin.processing.product.orders') || request()->routeIs('admin.completed.product.orders') || request()->routeIs('admin.rejected.product.orders') || request()->routeIs('admin.product.details') || (request()->path() == 'admins/product/orders/report')) ? 'true' : 'false' }}">
-    <span class="sub-item">Manage Orders</span>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->routeIs('admin.all.product.orders')) show
-@elseif(request()->routeIs('admin.pending.product.orders')) show
-@elseif(request()->routeIs('admin.processing.product.orders')) show
-@elseif(request()->routeIs('admin.completed.product.orders')) show
-@elseif(request()->routeIs('admin.rejected.product.orders')) show
-@elseif(request()->routeIs('admin.product.details')) show
-@elseif(request()->path() == 'admins/product/orders/report') show
-@endif" id="manageOrders" style="">
-<ul class="nav nav-collapse subnav">
-    <li class="@if(request()->path() == 'admins/product/all/orders') active @endif">
-        <a href="{{route('admin.all.product.orders')}}">
-            <span class="sub-item">All Orders</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/product/pending/orders') active @endif">
-        <a href="{{route('admin.pending.product.orders')}}">
-            <span class="sub-item">Pending Orders</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/product/processing/orders') active @endif">
-        <a href="{{route('admin.processing.product.orders')}}">
-            <span class="sub-item">Processing Orders</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/product/completed/orders') active @endif">
-        <a href="{{route('admin.completed.product.orders')}}">
-            <span class="sub-item">Completed Orders</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/product/rejected/orders') active @endif">
-        <a href="{{route('admin.rejected.product.orders')}}">
-            <span class="sub-item">Rejected Orders</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/product/orders/report') active @endif">
-        <a href="{{route('admin.orders.report')}}">
-            <span class="sub-item">Report</span>
-        </a>
-    </li>
-</ul>
-</div>
-</li>
-@endif
-</ul>
-</div>
-</li>
-@endif
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Course Management', $permissions)))
-{{-- Courses --}}
-<li class="nav-item
-@if(request()->path() == 'admins/course_categories') active
-@elseif(request()->path() == 'admins/course/settings') active
-@elseif(request()->path() == 'admins/course/purchase-log') active
-@elseif(request()->path() == 'admins/courses') active
-@elseif(request()->path() == 'admins/course/create') active
-@elseif(request()->is('admins/course/*/edit')) active
-@elseif(request()->is('admins/course/*/modules')) active
-@elseif(request()->is('admins/module/*/lessons')) active
-@elseif(request()->path() == 'admins/course/enrolls/report') active
-@endif">
-<a data-toggle="collapse" href="#course">
-    <i class='fas fa-book-open'></i>
-    <p>Course Management</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/course_categories') show
-@elseif(request()->path() == 'admins/course/settings') show
-@elseif(request()->path() == 'admins/course/purchase-log') show
-@elseif(request()->path() == 'admins/courses') show
-@elseif(request()->path() == 'admins/course/create') show
-@elseif(request()->is('admins/course/*/edit')) show
-@elseif(request()->is('admins/course/*/modules')) show
-@elseif(request()->is('admins/module/*/lessons')) show
-@elseif(request()->path() == 'admins/course/enrolls/report') show
-@endif"
-id="course"
->
-<ul class="nav nav-collapse">
-    <li class="@if(request()->path() == 'admins/course/settings') active @endif">
-        <a href="{{route('admin.course.settings')}}">
-            <span class="sub-item">Settings</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/course_categories') active @endif">
-        <a href="{{route('admin.course_category.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Category</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/course/create') active
-        @endif">
-        <a href="{{route('admin.course.create') . '?language=' . $default->code}}">
-            <span class="sub-item">Add Course</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/courses') active
-        @elseif(request()->is('admins/course/*/edit')) active
-        @elseif(request()->is('admins/course/*/modules')) active
-        @elseif(request()->is('admins/module/*/lessons')) active
-        @endif">
-        <a href="{{route('admin.course.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Courses</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/course/purchase-log') active @endif">
-        <a href="{{route('admin.course.purchaseLog')}}">
-            <span class="sub-item">Enrolls</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/course/enrolls/report') active @endif">
-        <a href="{{route('admin.enrolls.report')}}">
-            <span class="sub-item">Report</span>
-        </a>
-    </li>
-</ul>
-</div>
-</li>
-@endif
-
-
-
-{{-- Events Manage --}}
-@if (empty($admin->role) || (!empty($permissions) && in_array('Events Management', $permissions)))
-<li class="nav-item
-@if(request()->path() == 'admins/event/categories') active
-@elseif(request()->path() == 'admins/event/settings') active
-@elseif(request()->path() == 'admins/events') active
-@elseif(request()->path() == 'admins/events/payment-log') active
-@elseif(request()->is('admins/event/*/edit')) active
-@elseif(request()->path() == 'admins/events/report') active
-@endif">
-<a data-toggle="collapse" href="#event_manage">
-    <i class="fas fa-calendar-alt"></i>
-    <p>Events Management</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/event/categories') show
-@elseif(request()->path() == 'admins/event/settings') show
-@elseif(request()->path() == 'admins/events') show
-@elseif(request()->path() == 'admins/events/payment-log') show
-@elseif(request()->is('admins/event/*/edit')) show
-@elseif(request()->path() == 'admins/events/report') show
-@endif" id="event_manage">
-<ul class="nav nav-collapse">
-    <li class="@if(request()->path() == 'admins/event/settings') active @endif">
-        <a href="{{route('admin.event.settings')}}">
-            <span class="sub-item">Settings</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/event/categories') active @endif">
-        <a href="{{route('admin.event.category.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Category</span>
-        </a>
-    </li>
-    <li class="
-    @if(request()->path() == 'admins/events') active
-    @elseif(request()->is('admins/event/*/edit')) active
-    @endif">
-    <a href="{{route('admin.event.index') . '?language=' . $default->code}}">
-        <span class="sub-item">All Events</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/events/payment-log') active @endif">
-    <a href="{{route('admin.event.payment.log') . '?language=' . $default->code}}">
-        <span class="sub-item">Bookings</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/events/report') active @endif">
-    <a href="{{route('admin.event.report')}}">
-        <span class="sub-item">Report</span>
-    </a>
-</li>
-</ul>
-</div>
-</li>
-@endif
-
-@if (empty($admin->role) || (!empty($permissions) && in_array('Donation Management', $permissions)))
-<li class="nav-item
-@if(request()->path() == 'admins/donations') active
-@elseif(request()->path() == 'admins/donations/payment-log') active
-@elseif(request()->path() == 'admins/donation/settings') active
-@elseif(request()->is('admins/donation/*/edit')) active
-@elseif(request()->path() == 'admins/donation/report') active
-@endif">
-<a data-toggle="collapse" href="#donation_manage">
-    <i class="fas fa-hand-holding-usd"></i>
-    <p>Donations & Causes</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/donations') show
-@elseif(request()->path() == 'admins/donations/payment-log') show
-@elseif(request()->is('admins/donation/*/edit')) show
-@elseif(request()->path() == 'admins/donation/settings') show
-@elseif(request()->path() == 'admins/donation/report') show
-@endif" id="donation_manage">
-<ul class="nav nav-collapse">
-    <li class="@if(request()->path() == 'admins/donation/settings') active @endif">
-        <a href="{{route('admin.donation.settings')}}">
-            <span class="sub-item">Settings</span>
-        </a>
-    </li>
-    <li class="
-    @if(request()->path() == 'admins/donations') active
-    @elseif(request()->is('admins/donation/*/edit')) active
-    @endif">
-    <a href="{{route('admin.donation.index') . '?language=' . $default->code}}">
-        <span class="sub-item">All Causes</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/donations/payment-log') active @endif">
-    <a href="{{route('admin.donation.payment.log') . '?language=' . $default->code}}">
-        <span class="sub-item">Donations</span>
-    </a>
-</li>
-<li class="@if(request()->path() == 'admins/donation/report') active @endif">
-    <a href="{{route('admin.donation.report')}}">
-        <span class="sub-item">Report</span>
-    </a>
-</li>
-</ul>
-</div>
-</li>
-@endif
-
-{{-- Knowledgebase --}}
-@if (empty($admin->role) || (!empty($permissions) && in_array('Knowledgebase', $permissions)))
-{{-- Articles --}}
-<li class="nav-item
-@if(request()->path() == 'admins/article_categories') active
-@elseif(request()->path() == 'admins/articles') active
-@elseif(request()->path() == 'admins/article/archives') active
-@elseif(request()->is('admins/article/*/edit')) active
-@endif">
-<a data-toggle="collapse" href="#article">
-    <i class='fas fa-pencil-alt'></i>
-    <p>Knowledgebase</p>
-    <span class="caret"></span>
-</a>
-<div class="collapse
-@if(request()->path() == 'admins/article_categories') show
-@elseif(request()->path() == 'admins/articles') show
-@elseif(request()->path() == 'admins/article/archives') show
-@elseif(request()->is('admins/article/*/edit')) show
-@endif" id="article">
-<ul class="nav nav-collapse">
-    <li class="@if(request()->path() == 'admins/article_categories') active @endif">
-        <a href="{{route('admin.article_category.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Category</span>
-        </a>
-    </li>
-    <li class="@if(request()->path() == 'admins/articles') active
-        @elseif(request()->is('admins/articles/*/edit')) active
-        @endif">
-        <a href="{{route('admin.article.index') . '?language=' . $default->code}}">
-            <span class="sub-item">Articles</span>
         </a>
     </li>
 </ul>

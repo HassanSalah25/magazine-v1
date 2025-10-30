@@ -26,7 +26,7 @@
 
 @section('content')
     <div class="page-header">
-        <h4 class="page-title">Sections</h4>
+        <h4 class="page-title">Homepage Sections</h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="{{route('admin.dashboard')}}">
@@ -37,7 +37,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Service Page</a>
+                <a href="#">Homepage</a>
             </li>
             <li class="separator">
                 <i class="flaticon-right-arrow"></i>
@@ -53,7 +53,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="card-title d-inline-block">Sections</div>
+                            <div class="card-title d-inline-block">Homepage Sections</div>
                         </div>
                         <div class="col-lg-3">
                             @if (!empty($langs))
@@ -81,44 +81,16 @@
                                                 <input type="checkbox" class="bulk-check" data-val="all">
                                             </th>
                                             <th scope="col">Section Name</th>
-                                            <th scope="col">Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach ($sections as $key => $section)
-                                            @php
-                                               if(isset($abs[$section['status']]))
-                                                  $status = $abs[$section['status']];
-                                               elseif(isset($bex[$section['status']]))
-                                                  $status = $bex[$section['status']];
-                                            @endphp
                                             <tr>
                                                 <td>
                                                     <input type="checkbox" class="bulk-check" data-val="{{ $key }}">
                                                 </td>
                                                 <td>{{ $section['name'] }}</td>
-                                                <td>
-                                                    @if(isset($status) && $section['status'])
-                                                       <form id="statusForm{{$section['id']}}" class="d-inline-block" action="{{ route('admin.sections.update') }}" method="post">
-                                                            @csrf
-                                                            <input type="hidden" name="section_id" value="{{$section['id']}}">
-
-                                                            <label class="status-toggle">
-                                                                <input type="checkbox"
-                                                                    name="status"
-                                                                    onchange="document.getElementById('statusForm{{$section['id']}}').submit();"
-                                                                    {{ $status == 1 ? 'checked' : '' }}>
-                                                                <div class="status-toggle-track"></div>
-                                                                <div class="status-toggle-knob">
-                                                                    <div class="status-toggle-face status-toggle-face--off"></div>
-                                                                    <div class="status-toggle-face status-toggle-face--on"></div>
-                                                                </div>
-                                                            </label>
-                                                        </form>
-
-                                                    @endif
-                                                </td>
                                                 <td>
                                                     @if($section['route'])
                                                         <a href="{{ route($section['route'],['language' => $selectedLang]) }}" class="btn btn-primary btn-sm">

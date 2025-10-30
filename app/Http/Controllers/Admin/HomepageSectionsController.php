@@ -8,6 +8,7 @@ use App\Models\BasicExtra;
 use App\Models\BasicSetting;
 use App\Models\Language;
 use App\Models\Section;
+use App\Models\DynamicSection;
 use Illuminate\Http\Request;
 
 class HomepageSectionsController extends Controller
@@ -31,7 +32,12 @@ class HomepageSectionsController extends Controller
             ->with(['parent'])
             ->get();
 
-        return view('admin.homepage_sections.index', $data, compact('sections'));
+        // Get dynamic sections
+        $dynamicSections = DynamicSection::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('admin.homepage_sections.index', $data, compact('sections', 'dynamicSections'));
     }
 
     public function herosection(Request $request)

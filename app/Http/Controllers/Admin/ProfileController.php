@@ -9,7 +9,7 @@ use Auth;
 use Session;
 use Hash;
 use Validator;
-use App\Admin;
+use App\Models\Admin;
 
 class ProfileController extends Controller
 {

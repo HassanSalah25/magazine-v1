@@ -37,10 +37,6 @@
 @elseif(request()->path() == 'admins/portfolio/create') active
 @elseif(request()->is('admins/portfolio/*/edit')) active
 
-@elseif(request()->path() == 'admins/bcategorys') active
-@elseif(request()->path() == 'admins/blogs') active
-@elseif(request()->path() == 'admins/archives') active
-@elseif(request()->is('admins/blog/*/edit')) active
 
 @elseif(request()->path() == 'admins/footers') active
 @elseif(request()->path() == 'admins/ulinks') active
@@ -107,10 +103,6 @@
     @elseif(request()->path() == 'admins/portfolio/create') show
     @elseif(request()->is('admins/portfolio/*/edit')) show
 
-    @elseif(request()->path() == 'admins/bcategorys') show
-    @elseif(request()->path() == 'admins/blogs') show
-    @elseif(request()->path() == 'admins/archives') show
-    @elseif(request()->is('admins/blog/*/edit')) show
 
     @elseif(request()->path() == 'admins/footers') show
     @elseif(request()->path() == 'admins/ulinks') show
@@ -270,177 +262,6 @@
                 </div>
             </li>
 
-            {{-- Service Management --}}
-            <li class="
-            @if(request()->path() == 'admins/scategorys') selected
-            @elseif(request()->is('admins/service/settings')) selected
-            @elseif(request()->is('admins/scategory/*/edit')) selected
-            @elseif(request()->path() == 'admins/services') selected
-            @elseif(request()->is('admins/service/*/edit')) selected
-            @endif">
-                <a data-toggle="collapse" href="#service">
-                    <span class="sub-item">Services</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="collapse
-                @if(request()->path() == 'admins/scategorys') show
-                @elseif(request()->is('admins/service/settings')) show
-                @elseif(request()->is('admins/scategory/*/edit')) show
-                @elseif(request()->path() == 'admins/services') show
-                @elseif(request()->is('admins/service/*/edit')) show
-                @endif" id="service">
-                    <ul class="nav nav-collapse subnav">
-                        <li class="
-                            @if(request()->path() == 'admins/service/settings') active
-                            @endif">
-                            <a href="{{route('admin.service.settings')}}">
-                                <span class="sub-item">Settings</span>
-                            </a>
-                        </li>
-                        @if (serviceCategory())
-                        <li class="
-                        @if(request()->path() == 'admins/scategorys') active
-                        @elseif(request()->is('admins/scategory/*/edit')) active
-                        @endif">
-                            <a href="{{route('admin.scategory.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Main Service</span>
-                            </a>
-                        </li>
-                        @endif
-                        <li class="
-                        @if(request()->path() == 'admins/services') active
-                        @elseif(request()->is('admins/service/*/edit')) active
-                        @endif">
-                            <a href="{{route('admin.service.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Sub Services</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-
-
-            {{-- Portfolio Management --}}
-            <li class="
-            @if(request()->path() == 'admins/portfolios') selected
-            @elseif(request()->path() == 'admins/portfolio/create') selected
-            @elseif(request()->is('admins/portfolio/*/edit')) selected
-            @endif">
-                <a data-toggle="collapse" href="#portfolio">
-                    <span class="sub-item">Portfolios</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="collapse
-                @if(request()->path() == 'admins/portfolios') show
-                @elseif(request()->path() == 'admins/portfolio/create') show
-                @elseif(request()->is('admins/portfolio/*/edit')) show
-                @endif" id="portfolio">
-                    <ul class="nav nav-collapse subnav">
-                        <li class="
-                        @if(request()->path() == 'admins/portfolio/create') active
-                        @endif">
-                            <a href="{{route('admin.portfolio.create')}}">
-                                <span class="sub-item">Add Portfolio</span>
-                            </a>
-                        </li>
-                        <li class="
-                        @if(request()->path() == 'admins/portfolios') active
-                        @elseif(request()->is('admins/portfolio/*/edit')) active
-                        @endif">
-                            <a href="{{route('admin.portfolio.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Portfolios</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-            {{-- Blogs Management --}}
-            <li class="
-            @if(request()->path() == 'admins/bcategorys') selected
-            @elseif(request()->path() == 'admins/blogs') selected
-            @elseif(request()->path() == 'admins/archives') selected
-            @elseif(request()->is('admins/blog/*/edit')) selected
-            @endif">
-                <a data-toggle="collapse" href="#blogs">
-                    <span class="sub-item">Blogs</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="collapse
-                @if(request()->path() == 'admins/bcategorys') show
-                @elseif(request()->path() == 'admins/blogs') show
-                @elseif(request()->path() == 'admins/archives') show
-                @elseif(request()->is('admins/blog/*/edit')) show
-                @endif" id="blogs">
-                    <ul class="nav nav-collapse subnav">
-                        <li class="@if(request()->path() == 'admins/bcategorys') active @endif">
-                            <a href="{{route('admin.bcategory.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Category</span>
-                            </a>
-                        </li>
-                        <li class="
-                            @if(request()->path() == 'admins/blogs') active
-                            @elseif(request()->is('admins/blog/*/edit')) active
-                            @endif">
-                            <a href="{{route('admin.blog.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Blogs</span>
-                            </a>
-                        </li>
-                        <li class="@if(request()->path() == 'admins/archives') active @endif">
-                            <a href="{{route('admin.archive.index')}}">
-                                <span class="sub-item">Archives</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-
-            {{-- Gallery Management --}}
-            <li class="
-            @if(request()->path() == 'admins/gallery/settings') selected
-            @elseif(request()->path() == 'admins/gallery/categories') selected
-            @elseif(request()->path() == 'admins/gallery') selected
-            @elseif(request()->path() == 'admins/gallery/create') selected
-            @elseif(request()->is('admins/gallery/*/edit')) selected
-            @endif">
-                <a data-toggle="collapse" href="#gallery">
-                    <span class="sub-item">Gallery</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="collapse
-                @if(request()->path() == 'admins/gallery/settings') show
-                @elseif(request()->path() == 'admins/gallery/categories') show
-                @elseif(request()->path() == 'admins/gallery') show
-                @elseif(request()->path() == 'admins/gallery/create') show
-                @elseif(request()->is('admins/gallery/*/edit')) show
-                @endif" id="gallery">
-                    <ul class="nav nav-collapse subnav">
-                        <li class="@if(request()->path() == 'admins/gallery/settings') active @endif">
-                            <a href="{{route('admin.gallery.settings')}}">
-                                <span class="sub-item">Settings</span>
-                            </a>
-                        </li>
-                        @if ($data->gallery_category_status == 1)
-                        <li class="@if(request()->path() == 'admins/gallery/categories') active @endif">
-                            <a href="{{route('admin.gallery.categories') . '?language=' . $default->code}}">
-                                <span class="sub-item">Categories</span>
-                            </a>
-                        </li>
-                        @endif
-                        <li class="@if(request()->path() == 'admins/gallery') active
-                            @elseif(request()->path() == 'admins/gallery/create') active
-                            @elseif(request()->is('admins/gallery/*/edit')) active
-                            @endif"
-                            >
-                            <a href="{{route('admin.gallery.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Gallery</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
 
 
             {{-- FAQ Management --}}
@@ -480,54 +301,7 @@
                 </div>
             </li>
 
-
-            {{-- Career Page --}}
-            <li class="
-            @if(request()->path() == 'admins/jcategorys') selected
-            @elseif(request()->path() == 'admins/job/create') selected
-            @elseif(request()->is('admins/jcategory/*/edit')) selected
-            @elseif(request()->path() == 'admins/jobs') selected
-            @elseif(request()->is('admins/job/*/edit')) selected
-            @endif">
-                <a data-toggle="collapse" href="#career">
-                    <span class="sub-item">Career</span>
-                    <span class="caret"></span>
-                </a>
-                <div class="collapse
-                @if(request()->path() == 'admins/jcategorys') show
-                @elseif(request()->path() == 'admins/job/create') show
-                @elseif(request()->is('admins/jcategory/*/edit')) show
-                @elseif(request()->path() == 'admins/jobs') show
-                @elseif(request()->is('admins/job/*/edit')) show
-                @endif" id="career">
-                    <ul class="nav nav-collapse subnav">
-                        <li class="
-                            @if(request()->path() == 'admins/jcategorys') active
-                            @elseif(request()->is('admins/jcategory/*/edit')) active
-                            @endif">
-                            <a href="{{route('admin.jcategory.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Category</span>
-                            </a>
-                        </li>
-                        <li class="
-                        @if(request()->is('admins/job/create')) active
-                        @endif">
-                            <a href="{{route('admin.job.create')}}">
-                                <span class="sub-item">Post Job</span>
-                            </a>
-                        </li>
-                        <li class="
-                        @if(request()->path() == 'admins/jobs') active
-                        @elseif(request()->is('admins/job/*/edit')) active
-                        @endif">
-                            <a href="{{route('admin.job.index') . '?language=' . $default->code}}">
-                                <span class="sub-item">Job Management</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
+            
             {{-- Our Story Page --}}
             <li class="
             @if(request()->path() == 'admins/our_story') active @endif">

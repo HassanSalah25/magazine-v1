@@ -10,7 +10,7 @@ use Auth;
 use XSSCleaner;
 use App\Conversation;
 use Session;
-use App\Admin;
+use App\Models\Admin;
 use App\Models\BasicExtra;
 
 class TicketController extends Controller

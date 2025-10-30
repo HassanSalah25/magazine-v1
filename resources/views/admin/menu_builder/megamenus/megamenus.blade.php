@@ -47,96 +47,59 @@
         <div class="card-body">
           <div class="row">
             <div class="col-lg-12">
-
-                <div class="table-responsive">
-                  <table class="table table-striped mt-3">
-                    <thead>
-                      <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                          <td>Services</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'services'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Portfolios</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'portfolios'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Products</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'products'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Courses</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'courses'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Causes</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'causes'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Events</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'events'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Blogs</td>
-                          <td>
-                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => request()->input('language'), 'type' => 'blogs'])}}">
-                              <span class="btn-label">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                    </tbody>
-                  </table>
-                </div>
+                @php
+                    $langSelected = request()->input('language');
+                @endphp
+                
+                @if(empty($langSelected))
+                    <div class="alert alert-info">
+                        Please select a language to view blog categories.
+                    </div>
+                @elseif(isset($categories) && $categories->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Blog Category</th>
+                                    <th scope="col">Blogs Count</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>All Blogs</strong></td>
+                                    <td>-</td>
+                                    <td>
+                                        <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => $langSelected, 'type' => 'blogs'])}}">
+                                            <span class="btn-label">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <td>{{ convertUtf8($category->name) }}</td>
+                                        <td>{{ $category->blogs()->count() }}</td>
+                                        <td>
+                                            <a class="btn btn-secondary btn-sm" href="{{route('admin.megamenu.edit', ['language' => $langSelected, 'type' => 'blogs', 'category_id' => $category->id])}}">
+                                                <span class="btn-label">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                                Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="alert alert-warning">
+                        No blog categories found for the selected language.
+                    </div>
+                @endif
             </div>
           </div>
         </div>

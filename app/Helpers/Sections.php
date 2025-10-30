@@ -2337,3 +2337,18 @@ if (!function_exists('comparisonSection')) {
         return $sectionHtml;
     }
 }
+
+if (!function_exists('dynamicSection')) {
+    function dynamicSection($sectionName, $pageType = 'homepage') {
+        $section = \App\Models\DynamicSection::where('name', $sectionName)
+            ->where('is_active', true)
+            ->first();
+            
+        if (!$section || $section->posts()->count() == 0) {
+            return '';
+        }
+        
+        $template = $section->template_type;
+        return view("front.partials.dynamic-section-{$template}", compact('section'))->render();
+    }
+}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js @yield('html_class')" lang="zxx" @if($rtl == 1) dir="rtl" @endif>
+
 <head>
     <!--Start of Google Analytics script-->
     @if ($bs->is_analytics == 1)
@@ -21,8 +22,40 @@
     @endif
     <!-- favicon -->
     <link rel="shortcut icon" href="{{asset('assets/front/img/'.$bs->favicon)}}" type="image/x-icon">
-    <!-- plugin css -->
-    <link rel="stylesheet" href="{{asset('assets/front/css/plugin.min.css')}}">
+    
+    <!-- preload head styles -->
+    <link rel="preload" href="{{asset('front/assets/css/unicons.min.css')}}" as="style">
+    <link rel="preload" href="{{asset('front/assets/css/swiper-bundle.min.css')}}" as="style">
+
+    <!-- preload footer scripts -->
+    <link rel="preload" href="{{asset('front/assets/js/libs/jquery.min.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/libs/scrollmagic.min.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/libs/swiper-bundle.min.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/libs/anime.min.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/helpers/data-attr-helper.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/helpers/swiper-helper.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/helpers/anime-helper.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/helpers/anime-helper-defined-timelines.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/uikit-components-bs.js')}}" as="script">
+    <link rel="preload" href="{{asset('front/assets/js/app.js')}}" as="script">
+
+    <!-- app head for bootstrap core -->
+    <script src="{{asset('front/assets/js/app-head-bs.js')}}"></script>
+
+    <!-- include uni-core components -->
+    <link rel="stylesheet" href="{{asset('front/assets/js/uni-core/css/uni-core.min.css')}}">
+
+    <!-- include styles -->
+    <link rel="stylesheet" href="{{asset('front/assets/css/unicons.min.css')}}">
+    <link rel="stylesheet" href="{{asset('front/assets/css/prettify.min.css')}}">
+    <link rel="stylesheet" href="{{asset('front/assets/css/swiper-bundle.min.css')}}">
+
+    <!-- include main style -->
+    <link rel="stylesheet" href="{{asset('front/assets/css/theme/demo-seven.min.css')}}">
+
+    <!-- include scripts -->
+    <script src="{{asset('front/assets/js/uni-core/js/uni-core-bundle.min.js')}}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @yield('styles')
     <style>
@@ -260,6 +293,9 @@
         <!-- CSS here -->
 
         <style>
+            a {
+                text-decoration: none;
+            }
              .content-with-image {
                     position: relative;
                 }
@@ -284,286 +320,337 @@
         </style>
     @endif
 </head>
-<body class="tp-magic-cursor" @if($rtl == 1) dir="rtl" @endif data-bg-color="@yield('data-bg-color')">
 
-    <!-- Begin magic cursor -->
-        <div id="magic-cursor">
-            <div id="ball"></div>
-        </div>
-    <!-- End magic cursor -->
-    <!-- preloader -->
-    @if ($bex->preloader_status == 1)
-        <div id="preloader">
-            <div class="preloader">
-                <span></span>
-                <span></span>
+<body class="uni-body panel bg-white text-gray-900 dark:bg-black dark:text-white text-opacity-50 overflow-x-hidden" @if($rtl == 1) dir="rtl" @endif data-bg-color="@yield('data-bg-color')">
+
+    <!--  Search modal -->
+    <div id="uc-search-modal" class="uc-modal-full uc-modal" data-uc-modal="overlay: true">
+        <div class="uc-modal-dialog d-flex justify-center bg-white text-dark dark:bg-gray-900 dark:text-white" data-uc-height-viewport="">
+            <button class="uc-modal-close-default p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            <div class="panel w-100 sm:w-500px px-2 py-10">
+                <h3 class="h1 text-center">Search</h3>
+                <form class="hstack gap-1 mt-4 border-bottom p-narrow dark:border-gray-700" action="?">
+                    <span class="d-inline-flex justify-center items-center w-24px sm:w-40 h-24px sm:h-40px opacity-50"><i class="unicon-search icon-3"></i></span>
+                    <input type="search" name="q" class="form-control-plaintext ms-1 fs-6 sm:fs-5 w-full dark:text-white" placeholder="Type your keyword.." aria-label="Search" autofocus>
+                </form>
             </div>
-        </div>
-    @endif
-    <!-- preloader end  -->
-
-    <!-- back to top start -->
-        <div class="back-to-top-wrapper">
-            <button id="back_to_top" type="button" class="back-to-top-btn">
-                <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-
-
-         <button class="Btn-11" data-bs-toggle="modal" data-bs-target="#quoteModal">
-             <div class="sign-22">
-                 <svg viewBox="0 0 512 512">
-                     <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                 </svg>
-             </div>
-         
-             <div class="text-33">
-                 <span>Request A Quote</span>
-             </div>
-         </button>
-    <!-- back to top end -->
-
-
-    <!--   header area start   -->
-    @includeIf('front.default.partials.navbar')
-
-    <div id="smooth-wrapper">
-        <div id="smooth-content">
-        <main>
-            @yield('content')
-        </main>
-
-        <footer class="pb-20">
-
-            <div class="dgm-footer-bg p-relative">
-
-                <!-- footer area start -->
-                <div class="dgm-footer-area black-bg-5 pt-100 pb-60">
-                    <div class="container container-1430">
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-6 mb-40">
-                                <div class="dgm-footer-widget dgm-footer-col-1 z-index-1 tp_fade_anim" data-delay=".3">
-                                    <div class="dgm-footer-logo mb-30">
-                                        <a href="{{ route('front.index') }}"><img data-width="120px"
-                                                                                src="{{ asset('assets/front/img/'.$bs->footer_logo) }}"
-                                                                                alt="footer logo"></a>
-                                    </div>
-                                    <div class="dgm-footer-widget-paragraph mb-35">
-                                        <p>
-                                            @if (strlen($bs->footer_text) > 194)
-                                                {{ mb_substr($bs->footer_text, 0, 194, 'UTF-8') }}
-                                                <span
-                                                    style="display: none;">{{ mb_substr($bs->footer_text, 194, null, 'UTF-8') }}</span>
-                                                <a href="#" class="see-more">{{ __('see more') }}...</a>
-                                            @else
-                                                {{ $bs->footer_text }}
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <div class="dgm-footer-widget-social">
-                                        @if (!empty($socials))
-                                            @foreach ($socials as $social)
-                                                <a href="{{ $social->url }}">
-                                                    <span>
-                                                        <i class="{{ $social->icon }}"></i>
-                                                    </span>
-                                                </a>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-2  col-md-3 mb-40">
-                                <div class="dgm-footer-widget dgm-footer-col-2 tp_fade_anim" data-delay=".4">
-                                    <h4 class="dgm-footer-widget-title">{{ __('Useful Links') }}</h4>
-                                    <div class="dgm-footer-widget-menu">
-                                        <ul>
-                                            @foreach ($ulinks as $ulink)
-                                                <li><a href="{{ $ulink->url }}">{{ convertUtf8($ulink->name) }}</a></li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-3 mb-40">
-                                <div class="dgm-footer-widget dgm-footer-col-3 tp_fade_anim" data-delay=".5">
-                                    <h4 class="dgm-footer-widget-title">{{ __('Contact Info') }}</h4>
-                                    <div class="dgm-footer-widget-menu">
-                                        <ul>
-                                            @php $addresses = explode(PHP_EOL, $bex->contact_addresses); @endphp
-                                            @foreach ($addresses as $address)
-                                                <li><a href="#">{{ $address }}</a></li>
-                                            @endforeach
-                                            @php $phones = explode(',', $bex->contact_numbers); @endphp
-                                            @foreach ($phones as $phone)
-                                                <li><a href="tel:{{ $phone }}">{{ $phone }}</a></li>
-                                            @endforeach
-                                            @php $mails = explode(',', $bex->contact_mails); @endphp
-                                            @foreach ($mails as $mail)
-                                                <li><a href="mail:{{$mail}}">{{$mail}}</a></li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-4 col-md-6 mb-40">
-                                <div class="dgm-footer-widget dgm-footer-col-4 z-index-1 tp_fade_anim" data-delay=".6">
-                                    <h4 class="dgm-footer-widget-title">{{ __('Subscribe Us') }}</h4>
-                                    <div class="dgm-footer-widget-paragraph color-style mb-35">
-                                        <p> {{ convertUtf8($bs->newsletter_text ?? 'Subscribe our newsletter for future updates. <br> Don’t worry, we won’t spam your email.') }}</p>
-                                    </div>
-                                    <div class="dgm-footer-widget-input p-relative">
-                                        <form id="footerSubscribeForm"
-                                            action="{{ route('front.subscribe') }}" method="POST">
-                                            <input id="email" type="email" name="email"
-                                                placeholder="{{ __('Enter your email...') }}" required>
-                                            <span class="input-icon">
-                                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M16 2.5C16 1.675 15.325 1 14.5 1H2.5C1.675 1 1 1.675 1 2.5M16 2.5V11.5C16 12.325 15.325 13 14.5 13H2.5C1.675 13 1 12.325 1 11.5V2.5M16 2.5L8.5 7.74998L1 2.5"
-                                                                stroke="#A1A4AA" stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round"/>
-                                                        </svg>
-                                                    </span>
-                                            <button class="input-button" type="submit">
-                                                        <span>
-                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M17.4918 0.523919C17.0417 0.0609703 16.3754 -0.110257 15.7541 0.0709359L1.2672 4.28277C0.611729 4.46578 0.147138 4.98852 0.0219872 5.65169C-0.105865 6.32754 0.340718 7.18639 0.924156 7.54515L5.45391 10.3283C5.9185 10.6146 6.51815 10.543 6.9026 10.1552L12.0896 4.93597C12.3507 4.66328 12.7829 4.66328 13.044 4.93597C13.3051 5.1978 13.3051 5.62451 13.044 5.8963L7.84799 11.1156C7.46263 11.5033 7.3906 12.1049 7.67422 12.5733L10.442 17.1484C10.7661 17.6911 11.3243 18 11.9366 18C12.0086 18 12.0896 18 12.1617 17.99C12.8639 17.9003 13.4222 17.4193 13.6293 16.7398L17.924 2.27243C18.1131 1.65638 17.942 0.985961 17.4918 0.523919Z"
-                                                                    fill="currentcolor"/>
-                                                                <path opacity="0.4"
-                                                                    d="M6.7091 15.5302C6.97201 15.7957 6.97201 16.226 6.7091 16.4915L5.47919 17.7281C5.34774 17.8613 5.17487 17.9274 5.002 17.9274C4.82913 17.9274 4.65626 17.8613 4.5248 17.7281C4.261 17.4627 4.261 17.0332 4.5248 16.7678L5.75381 15.5302C6.01761 15.2657 6.44529 15.2657 6.7091 15.5302ZM6.00348 12.0984C6.26639 12.3639 6.26639 12.7942 6.00348 13.0597L4.77358 14.2963C4.64212 14.4295 4.46925 14.4956 4.29638 14.4956C4.12351 14.4956 3.95064 14.4295 3.81919 14.2963C3.55538 14.0309 3.55538 13.6014 3.81919 13.336L5.04819 12.0984C5.312 11.8339 5.73967 11.8339 6.00348 12.0984ZM2.61701 11.0182C2.87992 11.2836 2.87992 11.714 2.61701 11.9794L1.38711 13.216C1.25566 13.3492 1.08279 13.4154 0.909915 13.4154C0.737044 13.4154 0.564173 13.3492 0.432719 13.216C0.168911 12.9506 0.168911 12.5212 0.432719 12.2557L1.66172 11.0182C1.92553 10.7536 2.35321 10.7536 2.61701 11.0182Z"
-                                                                    fill="currentcolor"/>
-                                                            </svg>
-                                                        </span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- footer area end -->
-                @if (!($bex->home_page_pagebuilder == 0 && $bs->copyright_section == 0))
-                    <!-- copyright area start -->
-                    <div class="tp-copyright-2-area tp-copyright-2-border black-bg-5">
-                        <div class="container container-1430">
-                            <div class="row align-items-center">
-                                <div class="col-xl-4 col-lg-5 col-md-6">
-                                    <div class="tp-copyright-2-left text-center text-md-start z-index-1">
-                                        {!! replaceBaseUrl(convertUtf8($bs->copyright_text)) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- copyright area end -->
-                @endif
-
-            </div>
-
-        </footer>
         </div>
     </div>
 
+    <!--  Menu panel -->
+    <div id="uc-menu-panel" data-uc-offcanvas="overlay: true;">
+        <div class="uc-offcanvas-bar bg-white text-dark dark:bg-gray-900 dark:text-white">
+            <header class="uc-offcanvas-header hstack justify-between items-center pb-4 bg-white dark:bg-gray-900">
+                <div class="uc-logo">
+                    <a href="{{ route('front.index') }}" class="h5 text-none text-gray-900 dark:text-white">
+                        <img class="w-32px" src="{{asset('front/assets/images/common/logo-icon.svg')}}" alt="{{$bs->website_title}}" data-uc-svg>
+                    </a>
+                </div>
+                <button class="uc-offcanvas-close p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                        <i class="fa-solid fa-xmark"></i>
+            </button>
+            </header>
+
+            <div class="panel">
+                <form id="search-panel" class="form-icon-group vstack gap-1 mb-3" data-uc-sticky="">
+                    <input type="email" class="form-control form-control-md fs-6" placeholder="Search..">
+                    <span class="form-icon text-gray">
+                            <i class="unicon-search icon-1"></i>
+                        </span>
+                </form>
+                <ul class="nav-y gap-narrow fw-bold fs-5" data-uc-nav>
+                <li class="uc-parent">
+                        <a href="#">Homepages</a>
+                        <ul class="uc-nav-sub" data-uc-nav="">
+                            <li><a href="main/index.html">Main</a></li>
+                            <li><a href="demo-two/index.html">Classic News</a></li>
+                            <li><a href="demo-three/index.html">Tech</a></li>
+                            <li><a href="demo-four/index.html">Classic Blog</a></li>
+                            <li><a href="demo-five/index.html">Gaming</a></li>
+                            <li><a href="demo-six/index.html">Sports</a></li>
+                            <li><a href="demo-seven/index.html">Newspaper</a></li>
+                            <li><a href="demo-eight/index.html">Magazine</a></li>
+                            <li><a href="demo-nine/index.html">Travel</a></li>
+                            <li><a href="demo-ten/index.html">Food</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Latest</a></li>
+                    <li><a href="#">Trending</a></li>
+                    <li class="uc-parent">
+                        <a href="#">Inner Pages</a>
+                        <ul class="uc-nav-sub" data-uc-nav="">
+                            <li class="uc-parent">
+                                <a href="#">Blog</a>
+                                <ul class="uc-nav-sub">
+                                    <li><a href="#">Full Width</a></li>
+                                    <li><a href="#">Grid 2 Cols</a></li>
+                                    <li><a href="#">Grid 3 Cols</a></li>
+                                    <li><a href="#">Grid 4 Cols</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hr opacity-10 my-1"></li>
+                    <li><a href="#">Sign in</a></li>
+                    <li><a href="#">Create an account</a></li>
+                </ul>
+                <ul class="social-icons nav-x mt-4">
+                    <li>
+                        @if (!empty($socials))
+                            @foreach ($socials as $social)
+                                <a href="{{ $social->url }}"><i class="{{ $social->icon }}"></i></a>
+                            @endforeach
+                        @endif
+                    </li>
+                </ul>
+                <div class="py-2 hstack gap-2 mt-4 bg-white dark:bg-gray-900" data-uc-sticky="position: bottom">
+                    <div class="vstack gap-1">
+                        <span class="fs-7 opacity-60">Select theme:</span>
+                        <div class="darkmode-trigger" data-darkmode-switch="">
+                            <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider fs-5"></span>
+                                </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <!--  Cart panel -->
+    <div id="uc-cart-panel" data-uc-offcanvas="overlay: true; flip: true;">
+        <div class="uc-offcanvas-bar bg-white text-dark dark:bg-gray-900 dark:text-white">
+            <button class="uc-offcanvas-close top-0 ltr:end-0 rtl:start-0 rtl:end-auto m-2 p-0 border-0 icon-2 lg:icon-3 btn btn-md dark:text-white transition-transform duration-150 hover:rotate-90" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            <div class="mini-cart-content vstack justify-between panel h-100">
+                <div class="mini-cart-header">
+                    <h3 class="title h5 m-0 text-dark dark:text-white">Shopping cart</h3>
+                </div>
+                <div class="mini-cart-listing panel flex-1 my-4 overflow-scroll">
+                    <p class="alert alert-warning" hidden>Your cart empty!</p>
+                    <div class="panel vstack gap-3">
+                        <!-- Cart items will be populated here -->
+                    </div>
+                </div>
+                <div class="mini-cart-footer panel pt-3 border-top">
+                    <div class="panel vstack gap-3 justify-between">
+                        <div class="mini-cart-total hstack justify-between">
+                            <h5 class="h5 m-0 text-dark dark:text-white">Subtotal</h5>
+                            <b class="fs-5">$0.00</b>
+                        </div>
+                        <div class="mini-cart-actions vstack gap-1">
+                            <a href="#" class="btn btn-md btn-outline-gray-100 text-dark dark:text-white dark:border-gray-700 dark:hover:bg-gray-700">View cart</a>
+                            <a href="#" class="btn btn-md btn-primary text-white">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+             </div>
+         
+    <!--  Favorites modal -->
+    <div id="uc-favorites-modal" data-uc-modal="overlay: true">
+        <div class="uc-modal-dialog lg:max-w-500px bg-white text-dark dark:bg-gray-800 dark:text-white rounded">
+            <button class="uc-modal-close-default p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            <div class="panel vstack justify-center items-center gap-2 text-center px-3 py-8">
+                <i class="icon icon-4 unicon-bookmark mb-2 text-primary dark:text-white"></i>
+                <h2 class="h4 md:h3 m-0">Saved articles</h2>
+                <p class="fs-5 opacity-60">You have not yet added any article to your bookmarks!</p>
+                <a href="{{ route('front.index') }}" class="btn btn-sm btn-primary mt-2 uc-modal-close">Browse articles</a>
+             </div>
+        </div>
+    </div>
+
+    <!--  Newsletter modal -->
+    <div id="uc-newsletter-modal" data-uc-modal="overlay: true">
+        <div class="uc-modal-dialog w-800px bg-white text-dark dark:bg-gray-900 dark:text-white rounded overflow-hidden">
+            <button class="uc-modal-close-default p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+         </button>
+            <div class="row md:child-cols-6 col-match g-0">
+                <div class="d-none md:d-flex">
+                    <div class="position-relative w-100 ratio-1x1">
+                        <img class="media-cover" src="{{asset('front/assets/images/demo-seven/common/newsletter.jpg')}}" alt="Newsletter image">
+                    </div>
+                </div>
+                <div>
+                    <div class="panel vstack self-center p-4 md:py-8 text-center">
+                        <h3 class="h3 md:h2">Subscribe to the Newsletter</h3>
+                        <p class="ft-tertiary">Join 10k+ people to get notified about new posts, news and tips.</p>
+                        <div class="panel mt-2 lg:mt-4">
+                            <form class="vstack gap-1" action="{{ route('front.subscribe') }}" method="POST">
+                                @csrf
+                                <input type="email" name="email" class="form-control form-control-sm w-full fs-6 bg-white dark:border-white dark:border-gray-700 dark:text-dark" placeholder="Your email address.." required>
+                                <button type="submit" class="btn btn-sm btn-primary">Sign up</button>
+                            </form>
+                            <p class="fs-7 mt-2">Do not worry we don't spam!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Account modal -->
+    <div id="uc-account-modal" data-uc-modal="overlay: true">
+        <div class="uc-modal-dialog lg:max-w-500px bg-white text-dark dark:bg-gray-800 dark:text-white rounded">
+            <button class="uc-modal-close-default p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            <div class="panel vstack gap-2 md:gap-4 text-center">
+                <ul class="account-tabs-nav nav-x justify-center h6 py-2 border-bottom d-none" data-uc-switcher="animation: uc-animation-slide-bottom-small, uc-animation-slide-top-small">
+                    <li><a href="#">Sign in</a></li>
+                    <li><a href="#">Sign up</a></li>
+                    <li><a href="#">Reset password</a></li>
+                    <li><a href="#">Terms of use</a></li>
+                </ul>
+                <div class="account-tabs-content uc-switcher px-3 lg:px-4 py-4 lg:py-8 m-0 lg:mx-auto vstack justify-center items-center">
+                    <div class="w-100">
+                        <div class="panel vstack justify-center items-center gap-2 sm:gap-4 text-center">
+                            <h4 class="h5 lg:h4 m-0">Log in</h4>
+                            <div class="panel vstack gap-2 w-100 sm:w-350px mx-auto">
+                                <form class="vstack gap-2">
+                                    <input class="form-control form-control-sm h-40px w-full fs-6 bg-white dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="email" placeholder="Your email" required>
+                                    <input class="form-control form-control-sm h-40px w-full fs-6 bg-white dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="password" placeholder="Password" autocomplete="new-password" required>
+                                    <div class="hstack justify-between items-start text-start">
+                                        <div class="form-check text-start">
+                                            <input class="form-check-input rounded-0 dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="checkbox" id="inputCheckRemember">
+                                            <label class="hstack justify-between form-check-label fs-7 sm:fs-6" for="inputCheckRemember">Remember me?</label>
+                                        </div>
+                                        <a href="#" class="uc-link fs-6" data-uc-switcher-item="2">Forgot password</a>
+                                    </div>
+                                    <button class="btn btn-primary btn-sm lg:mt-1" type="submit">Log in</button>
+                                </form>
+                                <div class="panel h-24px">
+                                    <hr class="position-absolute top-50 start-50 translate-middle hr m-0 w-100">
+                                    <span class="position-absolute top-50 start-50 translate-middle px-1 fs-7 text-uppercase bg-white dark:bg-gray-800">Or</span>
+                                </div>
+                                <div class="hstack gap-2">
+                                    <a href="#google" class="hstack items-center justify-center flex-1 gap-1 h-40px text-none rounded border border-gray-900 dark:bg-gray-800 dark:border-white dark:border-opacity-15 border-opacity-10">
+                                            <i class="icon icon-1 unicon-logo-google"></i>
+                                            <span class="fs-6">Google</span>
+                                        </a>
+                                    <a href="#facebook" class="hstack items-center justify-center flex-1 gap-1 h-40px text-none rounded border border-gray-900 dark:bg-gray-800 dark:border-white dark:border-opacity-15 border-opacity-10">
+                                            <i class="icon icon-1 unicon-logo-facebook"></i>
+                                            <span class="fs-6">Facebook</span>
+                                        </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  GDPR modal -->
+    <div id="uc-gdpr-modal" data-uc-modal="overlay: true">
+        <div class="uc-modal-dialog lg:max-w-500px bg-white text-dark dark:bg-gray-800 dark:text-white rounded">
+            <div class="panel vstack gap-2 md:gap-4 text-center">
+                <div class="panel vstack justify-center items-center gap-2 sm:gap-4 text-center">
+                    <h4 class="h5 lg:h4 m-0">Cookie consent</h4>
+                    <p class="fs-6">We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.</p>
+                    <div class="hstack gap-2">
+                        <button class="btn btn-outline-primary btn-sm">Reject All</button>
+                        <button class="btn btn-primary btn-sm" id="uc-accept-gdpr">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Bottom Actions Sticky -->
+    <div class="backtotop-wrap position-fixed bottom-0 end-0 z-99 m-2 vstack">
+        <div class="darkmode-trigger cstack w-40px h-40px rounded-circle text-none bg-gray-100 dark:bg-gray-700 dark:text-white" data-darkmode-toggle="">
+            <label class="switch">
+                    <span class="sr-only">Dark mode toggle</span>
+                    <input type="checkbox">
+                    <span class="slider fs-5"></span>
+                </label>
+        </div>
+        <a class="btn btn-sm bg-primary text-white w-40px h-40px rounded-circle" href="to_top" data-uc-backtotop>
+                <i class="fa-solid fa-chevron-up"></i>
+            </a>
+    </div>
+
+
+    @include('front.default.partials.navbar')
+   
+
+    <!-- Wrapper start -->
+    <div id="wrapper" class="wrap overflow-hidden-x">
+        <!-- Main content start -->
+        <main id="uc-main" class="uc-main">
+            @yield('content')
+        </main>
+        <!-- Main content end -->
+
+        <!-- Footer start -->
+        <footer id="uc-footer" class="uc-footer panel uc-dark">
+            <div class="footer-outer py-4 lg:py-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-opacity-50">
+                <div class="container max-w-xl">
+                    <div class="footer-inner vstack gap-6 xl:gap-8">
+                        <div class="uc-footer-bottom panel vstack gap-4 justify-center lg:fs-5">
+                            <nav class="footer-nav">
+                                <ul class="nav-x gap-2 lg:gap-4 justify-center text-center text-uppercase fw-medium">
+                                    @if (!empty($ulinks))
+                                        @foreach ($ulinks as $ulink)
+                                            <li><a class="hover:text-gray-900 dark:hover:text-white duration-150" href="{{ $ulink->url }}">{{ convertUtf8($ulink->name) }}</a></li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </nav>
+                            <div class="footer-social hstack justify-center gap-2 lg:gap-3">
+                                <ul class="nav-x gap-2">
+                                    @if (!empty($socials))
+                                        @foreach ($socials as $social)
+                                            <li>
+                                                <a class="hover:text-gray-900 dark:hover:text-white duration-150" href="{{ $social->url }}"><i class="{{ $social->icon }}"></i></a>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                                <div class="vr"></div>
+                                <div class="d-inline-block">
+                                    <a href="#" class="hstack gap-1 text-none fw-medium">
+                                        <i class="icon icon-1 unicon-earth-filled"></i>
+                                        <span>{{ $currentLang->name ?? 'English' }}</span>
+                                        <span data-uc-drop-parent-icon=""></span>
+                                    </a>
+                                    <div class="p-2 bg-white dark:bg-gray-800 shadow-xs w-150px" data-uc-drop="mode: click; boundary: !.uc-footer-bottom; animation: uc-animation-slide-top-small; duration: 150;">
+                                        <ul class="nav-y gap-1 fw-medium items-end">
+                                            @foreach ($langs as $lang)
+                                                <li><a href="{{ route('changeLanguage', $lang->code) }}">{{ $lang->name }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-copyright vstack sm:hstack justify-center items-center gap-1 lg:gap-2">
+                                <p>{!! replaceBaseUrl(convertUtf8($bs->copyright_text)) !!}</p>
+                                <ul class="nav-x gap-2 fw-medium">
+                                    <li><a class="uc-link text-underline hover:text-gray-900 dark:hover:text-white duration-150" href="#">Privacy notice</a></li>
+                                    <li><a class="uc-link text-underline hover:text-gray-900 dark:hover:text-white duration-150" href="#">Terms of condition</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer end -->
+        </div>
+    <!-- Wrapper end -->
+
     {{-- WhatsApp Chat Button --}}
     <div id="WAButton"></div>
-
-    @if ($bex->is_shop == 1 && $bex->catalog_mode == 0)
-        <style>
-            #cartIconWrapper {
-                position: fixed;
-                top: 50%;
-                right: 0;
-                transform: translateY(-50%);
-                z-index: 9999;
-                background: #00a651;
-                    border-radius: 31px 0 0 31px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-                padding: 10px 18px 10px 10px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                min-width: 70px;
-                transition: box-shadow 0.2s, background 0.2s;
-            }
-            #cartIconWrapper:hover {
-                box-shadow: 0 12px 32px rgba(0,0,0,0.22);
-                background: #a89c5d;
-            }
-            #cartIcon {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-decoration: none;
-                color: #fff;
-            }
-            .cart-length {
-                display: flex;
-                flex-direction: column-reverse;
-                align-items: center;
-                font-weight: bold;
-                margin-bottom: 6px;
-            }
-            .cart-length i {
-                font-size: 26px;
-                color: #ffffffff;
-                margin-bottom: 2px;
-            }
-            .cart-length .length {
-                color: #ffffffff;
-                font-size: 13px;
-                font-weight: bold;
-                background: none;
-                border-radius: 0;
-                padding: 0;
-                margin: 0;
-            }
-            .cart-total {
-                font-size: 14px;
-                color: #e0e0e0;
-                font-weight: 500;
-                text-align: center;
-            }
-            @media (max-width: 600px) {
-                #cartIconWrapper {
-                    top: unset;
-                    bottom: 10px;
-                    right: 10px;
-                    left: unset;
-                    transform: none;
-                    border-radius: 8px;
-                    min-width: 60px;
-                    padding: 8px 10px;
-                }
-                .cart-length i {
-                    font-size: 20px;
-                }
-                .cart-total {
-                    font-size: 12px;
-                }
-            }
-        </style>
-        <div id="cartIconWrapper">
-            <a class="d-block" id="cartIcon" href="{{route('front.cart')}}">
-                <div class="cart-length">
-                    <i class="fas fa-cart-plus"></i>
-                    <span class="length">{{cartLength()}}</span>
-                </div>
-                <div class="cart-total">
-                    {{$bex->base_currency_symbol_position == 'left' ? $bex->base_currency_symbol : ''}}
-                    {{cartTotal()}}
-                    {{$bex->base_currency_symbol_position == 'right' ? $bex->base_currency_symbol : ''}}
-                </div>
-            </a>
-        </div>
-    @endif
 
 
     {{-- Cookie alert dialog start --}}
@@ -582,6 +669,7 @@
     {{-- Global Quote Modal --}}
     @includeIf('front.partials.quote-modal')
 
+   
 
     @php
         $mainbs = [];
@@ -593,6 +681,24 @@
         var vap_pub_key = "{{env('VAPID_PUBLIC_KEY')}}";
         var rtl = {{ $rtl }};
     </script>
+
+    <!-- include jquery & bootstrap js -->
+    <script defer src="{{asset('front/assets/js/libs/jquery.min.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/libs/bootstrap.min.js')}}"></script>
+
+    <!-- include scripts -->
+    <script defer src="{{asset('front/assets/js/libs/anime.min.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/libs/swiper-bundle.min.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/libs/scrollmagic.min.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/helpers/data-attr-helper.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/helpers/swiper-helper.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/helpers/anime-helper.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/helpers/anime-helper-defined-timelines.js')}}"></script>
+    <script defer src="{{asset('front/assets/js/uikit-components-bs.js')}}"></script>
+
+    <!-- include app script -->
+    <script defer src="{{asset('front/assets/js/app.js')}}"></script>
+
     <!-- popper js -->
     <script src="{{asset('assets/front/js/popper.min.js')}}"></script>
     <!-- bootstrap js -->
@@ -604,24 +710,6 @@
     <!-- pagebuilder custom js -->
     <script src="{{asset('assets/front/js/common-main.js')}}" defer></script>
 
-    {{--               whatsapp init code--}}
-    {{--@if ($bex->is_whatsapp == 1)
-        <script type="text/javascript">
-            var whatsapp_popup = {{$bex->whatsapp_popup}};
-            var whatsappImg = "{{asset('assets/front/img/whatsapp.svg')}}";
-            $(function () {
-                $('#WAButton').floatingWhatsApp({
-                    phone: "{{$bex->whatsapp_number}}", //WhatsApp Business phone number
-                    headerTitle: "{{$bex->whatsapp_header_title}}", //Popup Title
-                    popupMessage: `{!! nl2br($bex->whatsapp_popup_message) !!}`, //Popup Message
-                    showPopup: whatsapp_popup == 1 ? true : false, //Enables popup display
-                    buttonImage: '<img src="' + whatsappImg + '" />', //Button Image
-                    position: "right" //Position: left | right
-
-                });
-            });
-        </script>
-    @endif--}}
     @yield('scripts')
     @stack('event-js')
 
@@ -641,8 +729,6 @@
     <script>
         $(document).ready(function () {
             $("#subscribeForm, #footerSubscribeForm").on('submit', function (e) {
-                // console.log($(this).attr('id'));
-
                 e.preventDefault();
 
                 let formId = $(this).attr('id');
@@ -656,7 +742,6 @@
                     contentType: false,
                     processData: false,
                     success: function (data) {
-                        // console.log(data);
                         if ((data.errors)) {
                             $this.find(".err-email").html(data.errors.email[0]);
                         } else {
@@ -667,8 +752,6 @@
                     }
                 });
             });
-
-
         });
     </script>
     <!--End of subscribe functionality-->
@@ -700,8 +783,8 @@
         {!! $bs->addthis_script !!}
     @endif
 <!--End of AddThis script-->
-@if($rtl == 1)
 
+    @if($rtl == 1)
     <script src="{{ asset('front/rtl/assets/js/vendor/jquery.js') }}"></script>
     <script src="{{ asset('front/rtl/assets/js/bootstrap-bundle.js') }}"></script>
     <script src="{{ asset('front/rtl/assets/js/swiper-bundle.js') }}"></script>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
-use App\Popup;
+use App\Models\Popup;
 use Validator;
 use Session;
 

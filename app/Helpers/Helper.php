@@ -143,6 +143,15 @@ if (!function_exists('getHref') ) {
             $href = route('front.checkout');
         } else if ($link["type"] == 'blogs' || $link["type"] == 'blogs-megamenu') {
             $href = route('front.blogs');
+        } else if (strpos($link["type"], 'blog-category-') === 0) {
+            // Handle blog category: extract category ID from type (remove -megamenu suffix if present)
+            $categoryId = str_replace(['blog-category-', '-megamenu'], '', $link["type"]);
+            $category = \App\Models\Bcategory::find($categoryId);
+            if (!empty($category) && !empty($category->slug)) {
+                $href = route('front.blogs', $category->slug);
+            } else {
+                $href = route('front.blogs');
+            }
         } else if ($link["type"] == 'rss') {
             $href = route('front.rss');
         } else if ($link["type"] == 'feedback') {

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Admin;
+use App\Models\Admin;
 use App\Role;
 use Auth;
 
