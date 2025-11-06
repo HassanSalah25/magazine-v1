@@ -1,0 +1,58 @@
+name: 🚀 Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 65002 -H 194.36.186.223 >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: ssh -p 65002 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no u579589673@194.36.186.223 "echo ✅ Connected!"
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude "node_modules/" \
+            --exclude "vendor/" \
+            --exclude ".env" \
+            --exclude ".env.*" \
+            --exclude "storage/" \
+            --exclude "tests/" \
+            --exclude "docker/" \
+            --exclude "public/" \
+            --exclude "resources/lang/en.json" \
+            --exclude "resources/lang/ar.json" \
+            --exclude "resources/lang/fr.json" \
+            --exclude "resources/lang/de.json" \
+            --exclude "resources/lang/es.json" \
+            --exclude "resources/lang/it.json" \
+            --exclude "resources/lang/ja.json" \
+            --exclude "resources/lang/ko.json" \
+            --exclude "resources/lang/pt.json" \
+            -e "ssh -i ~/.ssh/id_ed25519 -p 65002 -o StrictHostKeyChecking=no" ./ \
+            u579589673@194.36.186.223:/home/u579589673/domains/seo-wolves.com/public_html/
+
+      - name: Run Laravel post-deploy commands
+        run: |
+          ssh -p 65002 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+            u579589673@194.36.186.223 \
+            "cd /home/u579589673/domains/seo-wolves.com/public_html && \
+             php -v && \
+             php artisan optimize:clear && \
+             php artisan migrate --seed --force"
