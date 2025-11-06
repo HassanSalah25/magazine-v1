@@ -15,7 +15,7 @@
       <meta name="keywords" content="@yield('meta-keywords')">
 
       <meta name="csrf-token" content="{{ csrf_token() }}">
-      <title>{{$bs->website_title}} @yield('pagename')</title>
+      <title>{{$bs->website_title}} @yield('pagename')</title> 
       <!-- favicon -->
       <link rel="shortcut icon" href="{{asset('assets/front/img/'.$bs->favicon)}}" type="image/x-icon">
       <!-- bootstrap css -->
