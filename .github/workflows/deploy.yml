@@ -17,11 +17,11 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519_project
-          chmod 600 ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519_project
           ssh-keyscan -p 65002 -H 194.36.186.223 >> ~/.ssh/known_hosts
- 
+
       - name: Test SSH connection
-        run: ssh -p 65002 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no u579589673@194.36.186.223 "echo ✅ Connected!"
+        run: ssh -p 65002 -i ~/.ssh/id_ed25519_project -o StrictHostKeyChecking=no u579589673@194.36.186.223 "echo ✅ Connected!"
 
       - name: Deploy via rsync
         run: |
@@ -35,24 +35,13 @@ jobs:
             --exclude "storage/" \
             --exclude "tests/" \
             --exclude "docker/" \
-            --exclude "public/" \
-            --exclude "resources/lang/en.json" \
-            --exclude "resources/lang/ar.json" \
-            --exclude "resources/lang/fr.json" \
-            --exclude "resources/lang/de.json" \
-            --exclude "resources/lang/es.json" \
-            --exclude "resources/lang/it.json" \
-            --exclude "resources/lang/ja.json" \
-            --exclude "resources/lang/ko.json" \
-            --exclude "resources/lang/pt.json" \
-            -e "ssh -i ~/.ssh/id_ed25519 -p 65002 -o StrictHostKeyChecking=no" ./ \
+            -e "ssh -i ~/.ssh/id_ed25519_project -p 65002 -o StrictHostKeyChecking=no" ./ \
             u579589673@194.36.186.223:/home/u579589673/domains/seo-wolves.com/public_html/
 
       - name: Run Laravel post-deploy commands
         run: |
-          ssh -p 65002 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+          ssh -p 65002 -i ~/.ssh/id_ed25519_project -o StrictHostKeyChecking=no \
             u579589673@194.36.186.223 \
             "cd /home/u579589673/domains/seo-wolves.com/public_html && \
-             php -v && \
              php artisan optimize:clear && \
              php artisan migrate --seed --force"
