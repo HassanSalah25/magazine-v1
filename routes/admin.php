@@ -377,11 +377,11 @@ Route::group(['prefix' => 'admins', 'middleware' => ['auth:admin', 'checkstatus'
         Route::post('/statistics/update', [StatisticsController::class, 'update'])->name('admin.statistics.update');
         Route::post('/statistics/delete', [StatisticsController::class, 'delete'])->name('admin.statistics.delete');
 
-
-        // Admin Call to Action Section Routes
+ 
+        // Admin Call to Action Section Routes 
         Route::get('/cta', [CtaController::class, 'index'])->name('admin.cta.index');
         Route::post('/cta/{langid}/update', [CtaController::class, 'update'])->name('admin.cta.update');
-
+ 
         // Admin Portfolio Section Routes
         Route::get('/portfoliosection', [PortfoliosectionController::class, 'index'])->name('admin.portfoliosection.index');
         Route::post('/portfoliosection/{langid}/update', [PortfoliosectionController::class, 'update'])->name('admin.portfoliosection.update');
