@@ -5,11 +5,11 @@
       http-equiv="Content-Type"
       content="text/html; charset=UTF-8"
     >
-    <meta
+    <meta 
       http-equiv="X-UA-Compatible"
       content="IE=edge"
     />
-    <meta
+    <meta 
       http-equiv="X-UA-Compatible"
       content="ie=edge"
     >
