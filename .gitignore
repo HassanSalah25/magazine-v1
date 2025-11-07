@@ -18,7 +18,6 @@
 /public/vendor
 /public/hot
 /public/storage
-/public/assets
 /public/assets/front
 /storage/*.key
 /storage/pail
