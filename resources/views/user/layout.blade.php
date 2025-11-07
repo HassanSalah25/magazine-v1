@@ -11,7 +11,7 @@
     />
     <meta 
       http-equiv="X-UA-Compatible"
-      content="ie=edge"
+      content="ie-edge"
     >
     <meta
       name="csrf-token"
