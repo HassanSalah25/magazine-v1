@@ -1,4 +1,4 @@
-<!-- <div class="js-cookie-consent cookie-consent">
+<div class="js-cookie-consent cookie-consent">
 
   <div class="container">
     <div class="cookie-container">
@@ -12,4 +12,4 @@
     </div>
   </div>
 
-</div> -->
+</div>

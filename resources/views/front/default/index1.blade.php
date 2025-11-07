@@ -294,7 +294,7 @@
                     </div>
                     <section class="uX-tableSection_v1">
                         <div class="uX-tableHead_8b">
-                            <h2 style="color: gray !important;">Top Companies by Market Cap</h2>
+                            <h2>Top Companies by Market Cap</h2>
                         </div>
                         <div class="uX-tableWrapper_9x">
                             <table class="uX-table_92">
@@ -307,23 +307,23 @@
                             </table>
                         </div>
                     </section>
-                    <!-- <div class="uX-container_v2">
+                    <div class="uX-container_v2">
                         <div class="uX-companyTop_j8">
                             <div class="uX-companyInfo_55">
                                 <img id="xx-logo" class="uX-companyLogo_9" src="https://companiesmarketcap.com/img/company-logos/256/NVDA.webp" alt="logo" />
                                 <div>
-                                    <h3 id="xx-name" class="uX-companyName_2">Name</h3>
+                                    <h3 id="xx-name" class="uX-companyName_2">Company Name</h3>
                                     <div id="xx-symbol" class="uX-companyTicker_6">TICK</div>
                                 </div>
                             </div>
                             <div class="uX-companyStats_7">
-                                <div class="uX-statBlock_a1"><span>Market Cap</span><strong id="xx-marketcap" style="color:gray !important;">$0.00</strong></div>
-                                <div class="uX-statBlock_a1"><span>Price</span><strong id="xx-price" style="color:gray !important;">$0.00</strong></div>
-                                <div class="uX-statBlock_a1"><span>Change (24h)</span><strong id="xx-change" class="uX-mutedText_s1" style="color:gray !important;">0%</strong></div>
+                                <div class="uX-statBlock_a1"><span>Market Cap</span><strong id="xx-marketcap">$0.00</strong></div>
+                                <div class="uX-statBlock_a1"><span>Price</span><strong id="xx-price">$0.00</strong></div>
+                                <div class="uX-statBlock_a1"><span>Change (24h)</span><strong id="xx-change" class="uX-mutedText_s1">0%</strong></div>
                                 <div class="uX-statBlock_a1"><span>Country</span><div class="uX-companyTicker_6"><img src="https://flagcdn.com/us.svg" style="width:18px;vertical-align:middle;margin-right:6px;"> USA</div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
             </div>
 
     <!-- Additional Blog Posts Grid Section start -->
@@ -641,7 +641,7 @@
                                     <div class="block-footer cstack lg:mt-2">
                                         <a href="{{ route('front.blogs') }}" class="animate-btn gap-0 btn btn-sm btn-alt-primary bg-transparent text-black dark:text-white border w-100">
                                             <span>Load more posts</span>
-                                            <!-- <i class="fa-solid fa-angle-right"></i> -->
+                                            <i class="fa-solid fa-angle-right"></i>
                                         </a>
                                     </div>
                                 </div>

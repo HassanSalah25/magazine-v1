@@ -213,8 +213,8 @@
 <!-- dark light switcher start-->
 <div class="modal-sidebar-scroll rts-dark-light">
     <ul>
-        <li class="go-dark-w"><span>Dark</span><i class="fa fa-solid fa-moon"></i></li>
-        <li class="go-light-w"><span>Light</span><i class="fa fa-solid fa-sun"></i></li>
+        <li class="go-dark-w"><span>Dark</span><i class="rts-go-dark fa-solid fal fa-moon"></i></li>
+        <li class="go-light-w"><span>Light</span><i class="rts-go-light  fa-light fa-solid fa-sun"></i></li>
 
         <!-- <li><i class=" fa-moon"></i></li> -->
     </ul>

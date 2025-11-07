@@ -24,9 +24,9 @@
             <div class="container max-w-xl">
                 <ul class="breadcrumb nav-x justify-center gap-1 fs-7 sm:fs-6 m-0">
                     <li><a href="{{ route('front.index') }}">{{ __('Home') }}</a></li>
-                    <li><i class="fa-solid fa-angle-right"></i></li>
+                    <li><i class="unicon-chevron-right opacity-50"></i></li>
                     <li><a href="{{ route('front.blogs') }}">{{ __('Blog') }}</a></li>
-                    <li><i class="fa-solid fa-angle-right"></i></li>
+                    <li><i class="unicon-chevron-right opacity-50"></i></li>
                     <li><span class="opacity-50">
                         @if (empty($category))
                             {{__('All')}}
@@ -52,7 +52,6 @@
                             {{__('Blogs')}}
                         </h1>
                         <p class="fs-6 lg:fs-5 opacity-60">{{ convertUtf8($bs->blog_subtitle) }}</p>
-                        <input type="text" id="blog_search" class="form-control w-100px sm:w-200px md:w-300px lg:w-400px xl:w-500px mx-auto mt-2" style="border-color: #747474 !important;" placeholder="{{ __('Search Blog...') }}">
                     </header>
                     
                     <div class="row g-4 xl:g-8">
@@ -95,12 +94,6 @@
                                                                             <a href="#post_comment" class="post-comments text-none hstack gap-narrow">
                                                                                 <i class="fa-solid fa-comment-dots"></i>
                                                                                 <span>0</span>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div>
-                                                                            <a href="#post_comment" class="post-comments text-none hstack gap-narrow">
-                                                                                <i class="fa-solid fa-bookmark"></i>
-                                                                                <span>3</span>
                                                                             </a>
                                                                         </div>
                                                                     </div>

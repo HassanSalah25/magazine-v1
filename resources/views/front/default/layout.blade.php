@@ -319,7 +319,6 @@
 
         </style>
     @endif
-    
 </head>
 
 <body class="uni-body panel bg-white text-gray-900 dark:bg-black dark:text-white text-opacity-50 overflow-x-hidden" @if($rtl == 1) dir="rtl" @endif data-bg-color="@yield('data-bg-color')">
@@ -358,7 +357,7 @@
                 <form id="search-panel" class="form-icon-group vstack gap-1 mb-3" data-uc-sticky="">
                     <input type="email" class="form-control form-control-md fs-6" placeholder="Search..">
                     <span class="form-icon text-gray">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="unicon-search icon-1"></i>
                         </span>
                 </form>
                 <ul class="nav-y gap-narrow fw-bold fs-5" data-uc-nav>
@@ -569,13 +568,13 @@
 
     <!--  Bottom Actions Sticky -->
     <div class="backtotop-wrap position-fixed bottom-0 end-0 z-99 m-2 vstack">
-        <!-- <div class="darkmode-trigger cstack w-40px h-40px rounded-circle text-none bg-gray-100 dark:bg-gray-700 dark:text-white" data-darkmode-toggle="">
+        <div class="darkmode-trigger cstack w-40px h-40px rounded-circle text-none bg-gray-100 dark:bg-gray-700 dark:text-white" data-darkmode-toggle="">
             <label class="switch">
                     <span class="sr-only">Dark mode toggle</span>
                     <input type="checkbox">
                     <span class="slider fs-5"></span>
                 </label>
-        </div> -->
+        </div>
         <a class="btn btn-sm bg-primary text-white w-40px h-40px rounded-circle" href="to_top" data-uc-backtotop>
                 <i class="fa-solid fa-chevron-up"></i>
             </a>
@@ -621,7 +620,7 @@
                                 <div class="vr"></div>
                                 <div class="d-inline-block">
                                     <a href="#" class="hstack gap-1 text-none fw-medium">
-                                        <i class="fa-solid fa-earth-americas"></i>
+                                        <i class="icon icon-1 unicon-earth-filled"></i>
                                         <span>{{ $currentLang->name ?? 'English' }}</span>
                                         <span data-uc-drop-parent-icon=""></span>
                                     </a>

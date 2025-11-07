@@ -106,9 +106,9 @@
         <div class="container max-w-xl">
             <ul class="breadcrumb nav-x justify-center gap-1 fs-7 sm:fs-6 m-0">
                 <li><a href="{{ route('front.index') }}">{{ __('Home') }}</a></li>
-                <li><i class="fa-solid fa-angle-right"></i></li>
+                <li><i class="unicon-chevron-right opacity-50"></i></li>
                 <li><a href="{{ route('front.blogs') }}">{{ __('Blog') }}</a></li>
-                <li><i class="fa-solid fa-angle-right"></i></li>
+                <li><i class="unicon-chevron-right opacity-50"></i></li>
                 <li><span class="opacity-50">{{ $blog->bcategory->name }}</span></li>
             </ul>
         </div>

@@ -76,11 +76,11 @@
                                 <span>Live</span>
                             </a>
                         </div>
-                        <!-- <div class="uc-logo d-block md:d-none">
+                        <div class="uc-logo d-block md:d-none">
                             <a href="{{ route('front.index') }}">
                                 <img class="w-100px text-dark dark:text-white" src="{{ asset('assets/front/img/'.$bs->logo) }}" alt="{{ $bs->website_title }}" data-uc-svg>
                             </a>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="uc-navbar-center">
                         <div class="uc-logo d-none md:d-block">
